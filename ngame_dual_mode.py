@@ -428,4 +428,5 @@ def main():
         return False
 
 if __name__ == "__main__":
-    main()
+    from ngame_pipeline_guard import cli_guarded_exit
+    cli_guarded_exit(main, trigger="cli")

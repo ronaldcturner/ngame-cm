@@ -190,6 +190,8 @@ def ensure_quickbooks_auth(config_path: str, *, interactive_on_invalid_grant: bo
     from ngame_env import load_ngame_dotenv
 
     load_ngame_dotenv()
+    if os.environ.get("NGAME_UNATTENDED", "").strip().lower() in ("1", "true", "yes"):
+        interactive_on_invalid_grant = False
 
     from intuitlib.client import AuthClient
     from intuitlib.enums import Scopes
@@ -267,6 +269,11 @@ def ensure_quickbooks_auth(config_path: str, *, interactive_on_invalid_grant: bo
                 need_interactive = True
             else:
                 raise
+
+    if need_interactive and not interactive_on_invalid_grant:
+        raise QuickBooksOAuthError(
+            "invalid_grant: reconnect_required. Unattended scheduler will not open a browser."
+        )
 
     if _running_in_ci():
         raise QuickBooksOAuthError(

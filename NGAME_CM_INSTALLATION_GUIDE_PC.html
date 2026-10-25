@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>NGAME-CM — Installation Guide (Windows PC only)</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+  @page { margin: 0.7in; }
+  html, body, h1, h2, h3, h4, h5, h6, table, th, td, p, li, blockquote {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  body {
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #111;
+    max-width: 8.2in;
+    margin: 0 auto;
+    padding: 0.5in;
+  }
+  h1 { font-size: 20pt; border-bottom: 2px solid #1e3a5f; padding-bottom: 0.25em; }
+  h2 { font-size: 14pt; margin-top: 1.4em; color: #1e3a5f; page-break-after: avoid; }
+  h3 { font-size: 12pt; margin-top: 1em; page-break-after: avoid; }
+  table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 10pt; page-break-inside: avoid; }
+  th, td { border: 1px solid #ccc; padding: 0.35em 0.5em; text-align: left; vertical-align: top; }
+  th { background: #eef3f8; }
+  blockquote { margin: 0.75em 0; padding: 0.5em 1em; border-left: 4px solid #1e3a5f; background: #f9fafb; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; background: #f3f4f6; padding: 0.1em 0.25em; border-radius: 3px; }
+  pre { background: #f3f4f6; padding: 0.75em 1em; overflow-x: auto; page-break-inside: avoid; border: 1px solid #e5e7eb; }
+  pre code { background: none; padding: 0; }
+  ul, ol { padding-left: 1.4em; }
+  hr { border: none; border-top: 1px solid #d1d5db; margin: 1.5em 0; }
+  .print-hint { font-size: 9pt; color: #555; border: 1px dashed #999; padding: 0.5em; margin-bottom: 1em; }
+  @media print {
+    .print-hint { display: none; }
+    body { padding: 0; }
+    a { color: inherit; text-decoration: none; }
+  }
+  </style>
+</head>
+<body>
+<p class="print-hint"><strong>Windows PC only.</strong> Print / PDF: File → Print → Save as PDF. Follow the steps top to bottom. Do not open the Mac guide while installing.</p>
+<h1 id="ngame-cm-installation-guide-windows-pc-only">NGAME-CM —
+Installation Guide (Windows PC only)</h1>
+<p><strong>Hand this file to the site IT person who installs
+NGAME-CM.</strong> Use it on the dedicated Windows mini PC. Do not use
+the Mac guide on that machine.</p>
+<p><strong>Audience:</strong> The installer. Windows 10 or Windows 11.
+The computer stays on. Use <strong>PowerShell</strong> (not Command
+Prompt, not Git Bash).</p>
+<p><strong>Not for:</strong> The Financially Responsible Person (FRP),
+and not for the bookkeeper. They do not install this, they do not open
+PowerShell, and they do not click once per business day. The bookkeeper
+keeps using QuickBooks Online in a browser. No NGAME software goes on
+that PC.</p>
+<p><strong>Not in this file:</strong> macOS, Wave, QuickBooks sandbox /
+Development keys, or any other NGAME document. This is the
+<strong>customer go-live</strong> path: live QuickBooks Online,
+Production keys, one ngrok Connect click, then an unattended daily
+picture.</p>
+<p><strong>20 Oct 2026.</strong> This roll-up is the procedure for the
+next Windows host. It does not narrate the first mini. A new install
+clones <code>https://github.com/ronaldcturner/ngame-cm.git</code> once,
+into <code>Documents\ngame-cm</code>. Do not copy program files from
+another computer, and do not clone Classic (<code>ngame.git</code>) onto
+this PC.</p>
+<p>The steps below assume that clone already contains the scheduler, the
+lamp dashboard (four lines under <strong>NGAME Operations</strong>), and
+<code>ngame_notify.py</code>. Those pieces are in the working copy. They
+are not all on GitHub <code>main</code> yet. Do not point a test site at
+<code>git clone</code> until that working copy has been published. A
+machine that is already running must not <code>git pull</code>.</p>
+<hr />
+<h2 id="how-to-use-this-file-read-this-once">How to use this file (read
+this once)</h2>
+<ol type="1">
+<li>Keep <strong>this</strong> file open (or print the HTML). Start at
+<strong>Step 1</strong>. Do every step in order. Do not skip.</li>
+<li>After each step: if it worked, go to the next numbered step. If it
+failed, use the <strong>If this fails</strong> table <strong>under that
+same step</strong>, then continue.</li>
+<li>Do <strong>not</strong> open the Mac guide, the combined
+installation guide, <code>IMPLEMENTATION_GUIDE.md</code>, or
+<code>NGROK_COOKBOOK.md</code> while you are installing. ngrok is
+<strong>in this file</strong>.</li>
+<li>There are no “go do section X then return here” links. There is no
+Track A / Track B choice. There is no Mac column.</li>
+<li>Installing on a Mac is the other file. Reading this file on a Mac
+while the install happens on the Windows PC is fine.</li>
+</ol>
+<p><strong>Where you read this guide</strong></p>
+<p>Open the HTML on the Windows PC and switch between the browser and
+PowerShell, or read it on another computer. Either way is fine. This
+guide does not require a second machine, and it does not require you to
+type every line by hand.</p>
+<p>When a step shows a block of commands, paste the whole block into
+PowerShell, or enter the lines one by one. The commands run on the mini
+PC. A dollar sign in a command is required. There are no parentheses
+around <code>$env:USERPROFILE</code>.</p>
+<p><strong>The order you will follow</strong></p>
+<ol type="1">
+<li>PowerShell → 2. Sleep off → 3. Python → 4. Git → 5. Clone → 6.
+Virtual environment → 7–8. Production keys → 9–12. ngrok → 13–17. One
+Connect click → 18. Sandbox leftovers → 19–21. Ollama → 22. CM config
+(still off) → 23–25. Dashboard lamp → 26–28. Scheduler (idles) → 29.
+Lock → 30. One consultant picture → 31. Arm the 14-day clock → 32. What
+you say to the FRP → 33. Leave-site checklist. After
+<code>gate: PASSED</code>, the FRP may turn on Email, Text, or
+both.</li>
+</ol>
+<p>You will <strong>not</strong> finish the 14 days during the visit.
+You leave the clock running. You do not tell the site CM is done until a
+later run of <code>python ngame_soak_check.py</code> prints
+<code>gate: PASSED</code>.</p>
+<hr />
+<h2 id="what-you-are-installing">What you are installing</h2>
+<p>NGAME-CM is automated ongoing snapshot surveillance. It notifies the
+FRP of meaningfully anomalous ledger-profile events. It does not see
+every QuickBooks save, does not ingest Audit Log, and does not perform a
+formal audit.</p>
+<p>Each night is recorded on this PC:
+<code>logs\ngame_last_run.json</code> and
+<code>NGAME_Fraud_Analysis.json</code>. The dashboard at
+<code>http://localhost:5001/dashboard</code> is the lamp. Under
+<strong>NGAME Operations</strong> it shows <strong>Last run</strong>,
+<strong>Last result</strong>, <strong>Scheduled successes</strong>, and
+<strong>Next scheduled</strong>. Nobody clicks to take the picture.</p>
+<p>With no training workbook in the folder, the same 6:00 PM clock adds
+one column each business day until 30 columns are on file. Saturday and
+Sunday during that build do not add a column. <strong>Last
+result</strong> in that period is OK or FAIL, not an anomaly grade.
+After the 30th business-day column, the clock stops adding columns and
+takes an anomaly picture every calendar day, weekends included.</p>
+<p>A finished workbook may be placed in <code>Documents\ngame-cm</code>
+as <code>NGAME_Training_Matrix.xlsx</code> before the clock is armed,
+and only when this site is not building a new profile. That file is
+already trained. It is not this company’s new 30 days. The ordinary test
+site does not do this. It lets the clock build the matrix.</p>
+<p>Email and Text stay off through the install and through the 14
+nights. After <code>gate: PASSED</code>, the FRP may turn one or both
+on. A message goes out only for MEDIUM, HIGH, or a failed night. A quiet
+night sends nothing. Do not tell the site that mail is already
+sending.</p>
+<p>Say this to a customer, and stop:</p>
+<blockquote>
+<p>We do not wiretap QuickBooks. We take a scheduled picture of the
+books, compare it to the learned profile, and notify you if that picture
+looks meaningfully off. We do not see every save, and we do not replace
+the QuickBooks Audit Log.</p>
+</blockquote>
+<p>NGAME-CM runs on <strong>one machine</strong>: this mini PC, and it
+stays on. The bookkeeper’s PC gets <strong>no</strong> NGAME
+software.</p>
+<pre><code>Bookkeeper&#39;s computer
+  └─ browser → QuickBooks Online (cloud)
+                      ↑
+This Windows mini PC (does not sleep)
+  └─ Clock → scheduler + lock → Intuit API (read-only)
+         → same CPI path as Classic → journal + files on this PC</code></pre>
+<table>
+<colgroup>
+<col style="width: 57%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th>Component</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>This clone, Python, Ollama</td>
+<td>This PC. Folder <code>Documents\ngame-cm</code></td>
+</tr>
+<tr>
+<td>ngrok</td>
+<td>This PC, <strong>only</strong> for the one Connect click. Then you
+stop it</td>
+</tr>
+<tr>
+<td><code>quickbooks_config.json</code></td>
+<td>This PC. Secrets. Not in <code>ngame_cm_config.json</code></td>
+</tr>
+<tr>
+<td>Dashboard page</td>
+<td><code>http://localhost:5001/dashboard</code> on
+<strong>this</strong> PC. Four lamp lines. No daily click.</td>
+</tr>
+<tr>
+<td>Bookkeeper / other PCs</td>
+<td><strong>No NGAME install</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The process listens on <code>0.0.0.0:5001</code>. There is no login
+yet. Do not treat a LAN address as a feature. Do not port-forward it.
+The bookmark is localhost on this PC.</p>
+<p>Do not install by editing a Classic <code>Documents\ngame</code>
+folder or an NGAME-POC checkout. Clone <strong>ngame-cm</strong> into
+its own folder.</p>
+<p>Do not change extraction, CPI, z-score thresholds, or the 30-day
+window. Aligning the Ollama model name in Step 20 is allowed. Retuning
+the detector is not.</p>
+<table>
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 31%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Task</th>
+<th>You</th>
+<th>FRP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Install, OAuth, sleep off, scheduler</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Click to take the daily picture</td>
+<td><strong>No</strong></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>Open the dashboard page</td>
+<td>Optional</td>
+<td>Only if they want to look. Not a daily click.</td>
+</tr>
+<tr>
+<td>Audit Log</td>
+<td>Advise</td>
+<td>Still in the QuickBooks browser</td>
+</tr>
+<tr>
+<td>Email / Text</td>
+<td>After <code>gate: PASSED</code> only. Switches start off.</td>
+<td>They type an address or a mobile number and click Save. They do not
+edit Python.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production values you need before Step 8</strong></p>
+<p>Audithentic sends two strings out of band (not GitHub, not the
+example JSON):</p>
+<ol type="1">
+<li><strong>Production Client ID</strong></li>
+<li><strong>Production Client Secret</strong></li>
+</ol>
+<p>The callback URL does not exist until Step 13 on this PC. You
+register it during the visit (Step 15), after ngrok shows
+Forwarding.</p>
+<hr />
+<h2 id="what-you-need-in-hand-do-not-start-step-1-without-these">What
+you need in hand (do not start Step 1 without these)</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />This is the <strong>Windows mini
+PC</strong> (Windows 10 or 11), not the bookkeeper PC, not a Mac, not
+the FRP’s laptop</label></li>
+<li><label><input type="checkbox" />It can stay plugged in and signed
+in</label></li>
+<li><label><input type="checkbox" />Stable internet</label></li>
+<li><label><input type="checkbox" />You will use <strong>Windows
+PowerShell</strong></label></li>
+<li><label><input type="checkbox" />Customer approved
+<strong>read-only</strong> API access to the <strong>live</strong> QBO
+company</label></li>
+<li><label><input type="checkbox" /><strong>Production Client ID and
+Production Client Secret</strong> — not required at Step 1.
+<strong>Required before Step 16.</strong> Step 16 stops you if
+<code>quickbooks_config.json</code> still contains
+<code>YOUR_INTUIT_CLIENT_ID</code> or
+<code>YOUR_INTUIT_CLIENT_SECRET</code>. Do not invent keys.</label></li>
+<li><label><input type="checkbox" />An <strong>Audithentic
+owner</strong> can add a Redirect URI during the visit</label></li>
+<li><label><input type="checkbox" />A <strong>Company Admin</strong> or
+<strong>Master Admin</strong> of the <strong>live</strong> company will
+click Connect</label></li>
+<li><label><input type="checkbox" />You have or will create a
+<strong>free ngrok account</strong> (that is not an Intuit
+account)</label></li>
+</ul>
+<p>If any box is empty except the Production Client ID and Secret, stop
+and get it. Then start Step 1. Those two strings can wait through Step
+15. They must be in <code>quickbooks_config.json</code> before the
+<code>python</code> command in Step 16.</p>
+<hr />
+<h2 id="step-1-open-powershell-the-right-way">Step 1 — Open PowerShell
+the right way</h2>
+<ol type="1">
+<li>Click Start, type <code>PowerShell</code>, open <strong>Windows
+PowerShell</strong>.</li>
+<li>Do <strong>not</strong> open Command Prompt
+(<code>cmd.exe</code>).</li>
+<li>Leave this window open. Every command in this guide goes in
+PowerShell unless a step says to open a second window.</li>
+</ol>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Only Command Prompt</td>
+<td>Close it. Start → <code>PowerShell</code>. The commands below will
+not work in <code>cmd</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The prompt looks like
+<code>PS C:\Users\…&gt;</code>.</p>
+<hr />
+<h2 id="step-2-this-pc-must-not-sleep">Step 2 — This PC must not
+sleep</h2>
+<p>The daily picture happens only if this machine is awake at the hour
+you choose in Step 22. Screen off is fine. Sleep is not.</p>
+<ol type="1">
+<li>Plug the mini PC into mains power. Leave it plugged in.</li>
+<li>Open <strong>Settings</strong>. Click <strong>System</strong>. Click
+<strong>Power</strong>. On a PC that has a battery this item may instead
+say <strong>Power &amp; battery</strong>. On Windows 10 it may say
+<strong>Power &amp; sleep</strong>.</li>
+<li>Open <strong>Screen, sleep &amp; hibernate timeouts</strong>.</li>
+<li>Set <strong>Make my device sleep after</strong> to
+<strong>Never</strong>. If there is only one sleep choice, set that to
+<strong>Never</strong>. If a hibernate timeout is listed, set that to
+<strong>Never</strong> too.</li>
+<li><strong>When plugged in, turn off my screen after</strong> may stay
+at any number of minutes. Screen off is fine.</li>
+<li>The Windows user you install as must stay the signed-in user. Sleep
+Never does not help if Windows signs that user out every night.</li>
+</ol>
+<p>A UPS is later. Do not stop this install to buy one.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>You cannot find Sleep</td>
+<td>Search Settings for <code>sleep</code>. Set plugged-in sleep to
+Never.</td>
+</tr>
+<tr>
+<td>This is a laptop and the lid will be closed</td>
+<td>Do not use it. This guide is the mini PC that stays on.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> Plugged-in sleep is Never.</p>
+<hr />
+<h2 id="step-3-install-python-3.10-or-later">Step 3 — Install Python
+3.10 or later</h2>
+<ol type="1">
+<li>On this PC, open <a
+href="https://python.org/downloads">python.org/downloads</a>.</li>
+<li>Use the main button (<strong>Download Python</strong> or
+<strong>Install Python</strong>). Run the file it saves.</li>
+<li>A <strong>black window that is not PowerShell</strong> may ask these
+questions. Type <strong><code>y</code></strong> and press Enter for
+each. If Windows asks to allow system changes, click
+<strong>Yes</strong>.
+<ul>
+<li>Paths longer than 260 characters… <strong>Update setting now?
+[y/n]</strong> — this is only long folder names. It does not put Python
+on PATH.</li>
+<li>The global shortcuts directory is not configured… <strong>Add
+commands directory to your PATH now?</strong> — type
+<strong><code>y</code></strong>. This is the step that lets
+<code>python</code> run in PowerShell.</li>
+<li>You do not have the latest Python runtime… <strong>install CPython
+now?</strong> — type <strong><code>y</code></strong>. CPython is the
+Python from python.org. It is the one this guide means. It is not a
+second product. The download can take several minutes.</li>
+<li><strong>View online help?</strong> — type
+<strong><code>N</code></strong> and press Enter. You do not need
+it.</li>
+</ul></li>
+<li>If a graphical setup window appears instead, check <strong>Add
+python.exe to PATH</strong> and click <strong>Install Now</strong>. Do
+not customize the folder. The black-window installer does not show that
+checkbox.</li>
+<li>Close PowerShell completely. Open a <strong>new</strong> PowerShell
+window.</li>
+<li>Run:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>python <span class="op">--</span>version</span></code></pre></div>
+<p>You need <strong>3.10</strong> or later.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Black window: paths longer than 260 characters…
+<code>[y/n]</code></td>
+<td>Type <strong><code>y</code></strong> and press Enter.</td>
+</tr>
+<tr>
+<td>Black window: global shortcuts directory… <strong>Add commands
+directory to your PATH now?</strong></td>
+<td>Type <strong><code>y</code></strong> and press Enter. Allow system
+changes if Windows asks.</td>
+</tr>
+<tr>
+<td>Black window: do not have the latest Python runtime… <strong>install
+CPython now?</strong></td>
+<td>Type <strong><code>y</code></strong> and press Enter. CPython is the
+Python from python.org. Wait through the download.</td>
+</tr>
+<tr>
+<td>Black window: <strong>View online help?</strong></td>
+<td>Type <strong><code>N</code></strong> and press Enter.</td>
+</tr>
+<tr>
+<td><code>python</code> is not recognized</td>
+<td>Reinstall from python.org with <strong>Add python.exe to
+PATH</strong>. New PowerShell window.</td>
+</tr>
+<tr>
+<td>Microsoft Store “Python was not found…”</td>
+<td>Settings → Apps → Advanced app settings → App execution aliases →
+turn off <code>python.exe</code> and <code>python3.exe</code>. New
+PowerShell window.</td>
+</tr>
+<tr>
+<td>Version is 3.9 or older</td>
+<td>Install 3.10+ from python.org. New window.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> <code>python --version</code> prints 3.10
+or later. Close that PowerShell window. Step 4 starts in the browser. Do
+not keep this window open for Git.</p>
+<hr />
+<h2 id="step-4-install-git">Step 4 — Install Git</h2>
+<p>Leave PowerShell. This step starts in a <strong>browser</strong>.</p>
+<ol type="1">
+<li>In the browser, open <a
+href="https://git-scm.com/download/win">git-scm.com/download/win</a>. Do
+not paste that address into PowerShell.</li>
+<li>In the <strong>first paragraph</strong>, click <strong>Click here to
+download</strong> the latest <strong>x64</strong> Git for Windows. That
+is the only download. Ignore everything under it: Standalone Installer,
+Portable, ARM64, winget, and “build from source.”</li>
+<li>Run the file that downloads. The installer has many screens. On
+every one, leave the default and click <strong>Next</strong>. The
+default PATH choice is the one that lets PowerShell see
+<code>git</code>. Do not switch that screen to “Git Bash only.”</li>
+<li>At the end it may open release notes in the browser. Close that
+page. The notes are not part of the install.</li>
+<li>Open a <strong>new</strong> PowerShell window. A window that was
+already open will not see Git.</li>
+<li>Run:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>git <span class="op">--</span>version</span></code></pre></div>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git</code> is not recognized</td>
+<td>You used a window that was already open, or the installer was not
+the x64 setup from the first paragraph. Close PowerShell, open a new
+window, and run <code>git --version</code> again. If it still fails,
+rerun that x64 installer and leave the PATH screen on its default.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> <code>git --version</code> prints a
+version, for example <code>git version 2.56.0.windows.1</code>. Leave
+this new PowerShell window open. Step 5 uses it.</p>
+<hr />
+<h2 id="step-5-clone-ngame-cm-into-documents">Step 5 — Clone NGAME-CM
+into Documents</h2>
+<p>Do not clone <code>ngame.git</code>. Do not reuse
+<code>Documents\ngame</code> if that folder is Classic.</p>
+<p>Paste this block, or enter the lines one by one. Stay in the
+PowerShell window where <code>git --version</code> worked. The first
+line has one <code>$</code> immediately before <code>env</code>, and no
+parentheses.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>git clone https<span class="op">://</span>github<span class="op">.</span><span class="fu">com</span><span class="op">/</span>ronaldcturner<span class="op">/</span>ngame-cm<span class="op">.</span><span class="fu">git</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> ngame-cm</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Location</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\quickbooks_config<span class="op">.</span><span class="fu">example</span><span class="op">.</span><span class="fu">json</span></span></code></pre></div>
+<p><code>Get-Location</code> should end in <code>\ngame-cm</code>.
+<code>Get-Item</code> should print a path to
+<code>quickbooks_config.example.json</code>, not an error. The
+repository is private. If Windows asks <strong>Connect to
+GitHub</strong> and offers <strong>Sign in with your browser</strong> or
+a code, choose <strong>Sign in with your browser</strong>. Sign in as
+the GitHub user who can open <code>ronaldcturner/ngame-cm</code>. The
+next browser page is <strong>Authorize Git Credential Manager</strong>.
+Click the green <strong>Authorize</strong> button. Do not cancel. The
+clone waits until that page finishes.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The term <code>env:USERPROFILE</code> is not recognized</td>
+<td>The dollar sign before <code>env</code> was missing. Type
+<code>cd "$env:USERPROFILE\Documents"</code> with one <code>$</code>
+immediately before <code>env</code>. Stay in PowerShell.</td>
+</tr>
+<tr>
+<td><strong>Connect to GitHub</strong> / Sign in with your browser or a
+code</td>
+<td>The repository is private. Choose <strong>Sign in with your
+browser</strong>. Sign in as a GitHub user who can see
+<code>ronaldcturner/ngame-cm</code>. On <strong>Authorize Git Credential
+Manager</strong>, click the green <strong>Authorize</strong> button. Do
+not cancel.</td>
+</tr>
+<tr>
+<td>Volume label syntax is incorrect</td>
+<td>You are in Command Prompt, or the quotes are missing. Use PowerShell
+and the command above.</td>
+</tr>
+<tr>
+<td><code>destination path 'ngame-cm' already exists</code></td>
+<td>Rename it (<code>Rename-Item ngame-cm ngame-cm-old</code>) and clone
+again. Do not clone into <code>Documents\ngame</code>.</td>
+</tr>
+<tr>
+<td><code>Get-Item .\quickbooks_config.example.json</code> fails</td>
+<td>You are not in the clone.
+<code>cd "$env:USERPROFILE\Documents\ngame-cm"</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> <code>Get-Location</code> ends in
+<code>\ngame-cm</code> and
+<code>Get-Item .\quickbooks_config.example.json</code> prints the path
+to that file.</p>
+<hr />
+<h2 id="step-6-create-the-virtual-environment-and-install-packages">Step
+6 — Create the virtual environment and install packages</h2>
+<p>You are still in <code>ngame-cm</code>.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m venv <span class="op">.</span><span class="fu">venv</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>ExecutionPolicy RemoteSigned <span class="op">-</span>Scope CurrentUser</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m pip install <span class="op">--</span>upgrade pip</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m pip install <span class="op">-</span>r requirements<span class="op">.</span><span class="fu">txt</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m pip install <span class="op">-</span>r ngame_ui\requirements<span class="op">.</span><span class="fu">txt</span></span></code></pre></div>
+<p>If <code>Set-ExecutionPolicy</code> asks <code>[Y] Yes</code> and
+says the default is <strong>N</strong>, type
+<strong><code>Y</code></strong> and press Enter. Pressing Enter alone
+leaves scripts blocked.</p>
+<p>The prompt must show <code>(.venv)</code> after
+<code>Activate.ps1</code>. Use
+<strong><code>python -m pip</code></strong>, not bare <code>pip</code>.
+Allow several minutes.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Running scripts is disabled on this system</td>
+<td>Run
+<code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>.
+If it asks <code>[Y] Yes</code>, type <strong><code>Y</code></strong>
+and press Enter. Pressing Enter alone means No. Then run
+<code>.venv\Scripts\Activate.ps1</code> again.</td>
+</tr>
+<tr>
+<td><code>pip</code> is not a valid application for this OS</td>
+<td>You used bare <code>pip</code>. Use <code>python -m pip</code> with
+<code>(.venv)</code> showing.</td>
+</tr>
+<tr>
+<td>Microsoft Visual C++ / wheel build error</td>
+<td>Install the C++ Build Tools, then rerun the two
+<code>python -m pip install -r</code> commands.</td>
+</tr>
+<tr>
+<td>No <code>(.venv)</code> in the prompt</td>
+<td>From <code>ngame-cm</code>:
+<code>.venv\Scripts\Activate.ps1</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> Both installs finished and the prompt
+shows <code>(.venv)</code>.</p>
+<hr />
+<h2 id="step-7-create-quickbooks_config.json">Step 7 — Create
+<code>quickbooks_config.json</code></h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Copy-Item</span> quickbooks_config<span class="op">.</span><span class="fu">example</span><span class="op">.</span><span class="fu">json</span> quickbooks_config<span class="op">.</span><span class="fu">json</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\quickbooks_config<span class="op">.</span><span class="fu">json</span></span></code></pre></div>
+<p>There is no file named <code>quickbooks_api</code>. That name is a
+block inside <code>quickbooks_config.json</code>.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Example file not found</td>
+<td><code>cd "$env:USERPROFILE\Documents\ngame-cm"</code> and
+retry.</td>
+</tr>
+<tr>
+<td>File already exists</td>
+<td>Keep it only if Step 8 will replace every key. Do not leave
+<code>"environment": "sandbox"</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong>
+<code>Get-Item .\quickbooks_config.json</code> prints a path ending in
+<code>quickbooks_config.json</code> inside <code>ngame-cm</code>.</p>
+<hr />
+<h2 id="step-8-fill-production-keys-when-you-have-them">Step 8 — Fill
+Production keys when you have them</h2>
+<p>You may not have the Production Client ID and Secret yet. A later
+installer often will not have them at this moment either. That does not
+stop the install. Do not invent keys, and do not paste Development or
+sandbox keys in their place.</p>
+<ol type="1">
+<li>Open <code>quickbooks_config.json</code> in a plain-text editor. In
+the PowerShell window that is still in <code>ngame-cm</code>, this opens
+Notepad:</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>notepad <span class="op">.</span>\quickbooks_config<span class="op">.</span><span class="fu">json</span></span></code></pre></div>
+<p>Notepad++ or another plain-text editor is fine. Do not use Word.</p>
+<ol start="2" type="1">
+<li>If you <strong>have</strong> the Production Client ID and Secret,
+inside <code>"quickbooks_api"</code> set:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>client_id</code></td>
+<td>Production Client ID</td>
+</tr>
+<tr>
+<td><code>client_secret</code></td>
+<td>Production Client Secret</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>redirect_uri</code></td>
+<td>Leave until Step 14</td>
+</tr>
+<tr>
+<td><code>realm_id</code>, <code>access_token</code>,
+<code>refresh_token</code></td>
+<td><code>""</code></td>
+</tr>
+</tbody>
+</table>
+<ol start="3" type="1">
+<li><p>If you <strong>do not</strong> have them yet, leave
+<code>client_id</code> and <code>client_secret</code> as the
+placeholders already in the file (<code>YOUR_INTUIT_CLIENT_ID</code> and
+<code>YOUR_INTUIT_CLIENT_SECRET</code>). Leave <code>environment</code>
+and <code>redirect_uri</code> as they are. Leave the tokens empty. Save.
+Continue at Step 9. <strong>You must return to this step and replace
+both placeholders before Step 16.</strong> Step 16 runs a search and
+will not let you start Connect while either placeholder is still in the
+file. Intuit then shows <strong>Sorry, but undefined didn’t
+connect</strong>.</p></li>
+<li><p>Save. The file stays on this PC. It is not committed.</p></li>
+</ol>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>You only have sandbox keys</td>
+<td>Do not paste them. Leave the placeholders and continue at Step 9.
+Get the Production values before Step 16.</td>
+</tr>
+<tr>
+<td>JSON error later</td>
+<td>Commas and quotes. No trailing comma after the last field.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The file is saved. Either the Production
+client id, secret, and <code>"environment": "production"</code> are in
+it, or the placeholders are still there and you will fill the Production
+values before Step 16. Tokens are empty.</p>
+<hr />
+<h2 id="step-9-install-ngrok-once-on-this-pc">Step 9 — Install ngrok
+(once on this PC)</h2>
+<p>In the same PowerShell window:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>winget install ngrok <span class="op">-</span>s msstore</span></code></pre></div>
+<p>If <code>winget</code> is not recognized, stop. Do not hunt the ngrok
+website yet.</p>
+<p><strong>Done when:</strong> <code>winget</code> finishes and reports
+that ngrok was installed.</p>
+<hr />
+<h2 id="step-10-close-powershell-and-open-a-new-window">Step 10 — Close
+PowerShell and open a new window</h2>
+<p>The window that ran the installer does not see ngrok on PATH.</p>
+<ol type="1">
+<li>Close PowerShell completely.</li>
+<li>Open a new PowerShell window.</li>
+<li>Run this line. There are no parentheses. One <code>$</code> sits
+immediately before <code>env</code>.</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span></code></pre></div>
+<p><strong>Done when:</strong> A new window’s prompt ends in
+<code>\ngame-cm</code>.</p>
+<hr />
+<h2 id="step-11-confirm-ngrok-is-on-path">Step 11 — Confirm ngrok is on
+PATH</h2>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ngrok version</span></code></pre></div>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ngrok</code> is not recognized</td>
+<td>You did not open a new window, or ngrok is not installed. Repeat
+Steps 9–10.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> <code>ngrok version</code> prints a
+version.</p>
+<hr />
+<h2 id="step-12-save-the-ngrok-authtoken">Step 12 — Save the ngrok
+authtoken</h2>
+<ol type="1">
+<li>Sign up or sign in at <a href="https://ngrok.com">ngrok.com</a>.
+This is not Intuit.</li>
+<li>After sign-in the page says <strong>Endpoints</strong> and shows a
+<strong>+New Endpoint</strong> button. Do not click that button. It
+creates a cloud endpoint. This install does not use one.</li>
+<li>In the left-hand options list, click <strong>Your
+Authtoken</strong>. The screen says <strong>YourAuthtoken</strong> and
+shows a long token. Copy that token.</li>
+<li>In PowerShell, paste the token in place of the placeholder:</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ngrok config add-authtoken <span class="st">&quot;YOUR_AUTHTOKEN&quot;</span></span></code></pre></div>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Endpoints</strong> and <strong>+New Endpoint</strong></td>
+<td>You are signed in. Leave that button alone. In the left-hand options
+list, click <strong>Your Authtoken</strong> and copy the long
+token.</td>
+</tr>
+<tr>
+<td>authentication failed when you try the tunnel</td>
+<td>You skipped this step. Save the authtoken, then continue.</td>
+</tr>
+<tr>
+<td>You typed an <code>https://</code> URL at the prompt</td>
+<td>That is not a command. The command is
+<code>ngrok config add-authtoken</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> PowerShell says <strong>Authtoken
+saved</strong>.</p>
+<hr />
+<h2 id="step-13-start-the-tunnel-in-window-a-leave-it-running">Step 13 —
+Start the tunnel in Window A (leave it running)</h2>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 53%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Window</th>
+<th>What it runs</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A (this one)</strong></td>
+<td><code>ngrok http 8000</code></td>
+<td>Leave the panel up. Do not type other commands here.</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>You open this in Step 16</td>
+<td>Not yet.</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ngrok http <span class="dv">8000</span></span></code></pre></div>
+<p>The same window becomes a panel and stays there. You are not back at
+<code>PS …&gt;</code>. The panel says your name followed by <strong>is
+on ngrok.ai</strong>. <strong>Account</strong> shows your name. That
+panel is Window A.</p>
+<p>On that same panel, find <strong>Forwarding</strong>. Highlight the
+<strong>https</strong> address, then right-click. That copies it. Use
+https, not http. Copy it character for character (<code>ngrok</code>,
+not <code>grok</code>). An unsaved Notepad window is fine. Do not save
+that file.</p>
+<p>Do not press Ctrl+C. Do not type another command in this window.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>authentication failed</td>
+<td>Finish Step 12, then run <code>ngrok http 8000</code> again.</td>
+</tr>
+<tr>
+<td>Address already in use</td>
+<td>Something else has port 8000. Close it, then retry.</td>
+</tr>
+<tr>
+<td>The prompt returned</td>
+<td>The tunnel is down. Run <code>ngrok http 8000</code> again and stay
+in the panel.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The panel says your name and <strong>is
+on ngrok.ai</strong>, <strong>Account</strong> shows your name, and you
+have copied the https Forwarding host. The prompt has not returned.</p>
+<hr />
+<h2 id="step-14-write-the-callback-url-into-quickbooks_config.json">Step
+14 — Write the callback URL into
+<code>quickbooks_config.json</code></h2>
+<p>The JSON value is the Forwarding host plus
+<code>/callback</code>.</p>
+<p>Example: Forwarding <code>https://abcd1234.ngrok-free.app</code>
+becomes:</p>
+<pre class="text"><code>https://abcd1234.ngrok-free.app/callback</code></pre>
+<p>No trailing slash. https only.</p>
+<ol type="1">
+<li>Open <code>quickbooks_config.json</code>.</li>
+<li>Inside <code>"quickbooks_api"</code>, set <code>redirect_uri</code>
+to that string.</li>
+<li>Save.</li>
+<li>Leave Window A on the ngrok panel.</li>
+</ol>
+<p><strong>Done when:</strong> <code>redirect_uri</code> matches today’s
+Forwarding host plus <code>/callback</code>, and Window A is still the
+panel.</p>
+<hr />
+<h2
+id="step-15-put-todays-callback-on-the-intuit-production-redirect-uris-list">Step
+15 — Put today’s callback on the Intuit Production Redirect URIs
+list</h2>
+<p>Window A stays on the ngrok panel.</p>
+<ol type="1">
+<li>Sign in at <a
+href="https://developer.intuit.com">developer.intuit.com</a> with the
+Audithentic <strong>developer</strong> account (not the customer’s QBO
+user). A Mac browser is fine. This page does not have to be on the mini
+PC. Leave Window A on the ngrok panel.</li>
+<li>Use the browser that retained the correct user mailbox, the one that
+already reached <strong>My Apps</strong>. A different browser does not
+have that mailbox. If the page says <strong>Create new user</strong> and
+no email appears in any corner, close it. Do not fill out that form.
+Open the browser that has the mailbox and go to <a
+href="https://developer.intuit.com/app/developer/dashboard">developer.intuit.com/app/developer/dashboard</a>.</li>
+<li>Open the NGAME app. Stay on <strong>Production</strong>, not
+Development.</li>
+<li>Open <strong>Redirect URIs</strong>.</li>
+<li>If today’s <code>https://…/callback</code> is already listed, do not
+add a duplicate.</li>
+<li>If it is not listed: <strong>Add URI</strong>, paste it,
+<strong>Save</strong>. Refresh and confirm it is still there.</li>
+</ol>
+<p>If you are not the owner, send that exact string and wait. Do not run
+Step 16 until it is listed.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Create new user</strong>, and no email in any corner</td>
+<td>This browser does not have the correct user mailbox. Close the form.
+Open the browser that retained that mailbox, then open the dashboard
+address.</td>
+</tr>
+<tr>
+<td>You added it under Development</td>
+<td>Add it on the <strong>Production</strong> list.</td>
+</tr>
+<tr>
+<td>Owner is not reachable</td>
+<td>Stop. Keep Window A up if you can. If you must stop ngrok, resume at
+Step 13 later. If the host changed, redo Steps 14 and 15.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> Today’s callback is on the Production
+list, JSON matches it, and Window A is still the panel. Do not start
+Step 16 while <code>YOUR_INTUIT_CLIENT_ID</code> or
+<code>YOUR_INTUIT_CLIENT_SECRET</code> is still in
+<code>quickbooks_config.json</code>.</p>
+<hr />
+<h2 id="step-16-open-window-b-and-start-the-oauth-listener">Step 16 —
+Open Window B and start the OAuth listener</h2>
+<p>Keep Window A on the ngrok panel.</p>
+<p><strong>Stop. The JSON file must be filled in before the
+<code>python</code> command below.</strong></p>
+<p><code>quickbooks_config.json</code> must already contain the real
+Production Client ID and Production Client Secret.
+<code>environment</code> must be <code>production</code>.
+<code>redirect_uri</code> must be today’s callback from Steps 14 and 15.
+<code>realm_id</code>, <code>access_token</code>, and
+<code>refresh_token</code> may still be <code>""</code>.</p>
+<p>If <code>client_id</code> is still
+<code>YOUR_INTUIT_CLIENT_ID</code>, or <code>client_secret</code> is
+still <code>YOUR_INTUIT_CLIENT_SECRET</code>, do not run
+<code>python run_data_extraction.py</code>. Intuit shows <strong>Sorry,
+but undefined didn’t connect</strong>.</p>
+<ol type="1">
+<li>Open a <strong>second</strong> PowerShell window. This is Window
+B.</li>
+<li>In Window B:</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Select-String</span> <span class="op">-</span>Path <span class="op">.</span>\quickbooks_config<span class="op">.</span><span class="fu">json</span> <span class="op">-</span>Pattern <span class="st">&quot;YOUR_INTUIT&quot;</span></span></code></pre></div>
+<p><strong>Stop if that search prints anything.</strong> Open the file,
+replace both placeholders with the Production values (<strong>Production
+→ Keys &amp; credentials</strong> in Firefox), set
+<code>environment</code> to <code>production</code>, save, and run the
+search again.</p>
+<p><strong>Run the next command only when the search prints
+nothing.</strong></p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>python run_data_extraction<span class="op">.</span><span class="fu">py</span></span></code></pre></div>
+<p>The listener on port 8000 lasts about <strong>three minutes</strong>.
+Go straight to Step 17.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>No module named 'flask'</code> or <code>quickbooks</code></td>
+<td><code>(.venv)</code> is missing. Activate, and if needed
+<code>python -m pip install -r requirements.txt</code>, then run the
+script again.</td>
+</tr>
+<tr>
+<td>Window A is back at a prompt</td>
+<td>Tunnel is dead. Start <code>ngrok http 8000</code> again. If the
+host changed, redo Steps 14–15.</td>
+</tr>
+<tr>
+<td>Window B says <strong>timed out</strong>. The browser said
+<strong>welcome</strong>, then <strong>Uh, oh, there’s a connection
+problem</strong></td>
+<td>The three minutes ended during sign-in. Window A must still be the
+same https host. In Window B run
+<code>python run_data_extraction.py</code> again and finish Connect
+immediately.</td>
+</tr>
+<tr>
+<td>The long URL starts with <strong>appcenter.intuit.com</strong> and
+the page says <strong>connection problem</strong></td>
+<td>Intuit never called the listener. Do not press Enter on that URL. If
+the page has <strong>View error details</strong>, open it. The usual
+line is that <code>redirect_uri</code> is invalid. Window A’s https host
+plus <code>/callback</code>, <code>redirect_uri</code> in
+<code>quickbooks_config.json</code>, and the <strong>Production</strong>
+Redirect URIs list must be the same string. Fix any mismatch, then run
+<code>python run_data_extraction.py</code> again.</td>
+</tr>
+<tr>
+<td><code>curl</code> prints <strong>OAuth complete</strong>, then
+Window B says <strong>Authentication failed</strong> and <strong>did not
+include an authorization code</strong></td>
+<td>That curl had no Intuit code and ended the wait. Run
+<code>python run_data_extraction.py</code> again. Do not curl
+<code>/callback</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> Window A is still ngrok. Window B is
+running <code>run_data_extraction.py</code>.</p>
+<hr />
+<h2 id="step-17-finish-connect-in-the-browser">Step 17 — Finish Connect
+in the browser</h2>
+<p>Do this immediately. The script opens <strong>Microsoft Edge</strong>
+on this PC. Firefox is only the developer portal from Step 15. Edge
+signed in as the QBO owner does not show <strong>View error
+details</strong>. That link is for the developer mailbox.</p>
+<p>In Edge, stay on <strong>Settings → Privacy, search, and
+services</strong> and set <strong>Tracking prevention</strong> to
+<strong>Basic</strong>. <strong>Cookies</strong> is not on that page.
+Click the address bar and open
+<code>edge://settings/content/cookies</code>. The switch there is
+<strong>Allow third-party cookies</strong>. Turn it on. If the page
+instead says <strong>Block third-party cookies</strong>, leave that off.
+Close the error tab. Sign out of Intuit in Edge if the mailbox there is
+not the QBO owner.</p>
+<ol type="1">
+<li>Sign in with the <strong>QBO owner</strong> mailbox, not the
+developer mailbox. The developer mailbox is only for the Intuit
+developer portal in Step 15. Choose the <strong>live</strong> company,
+not sandbox.</li>
+<li>Connect as Company Admin or Master Admin.</li>
+<li>Do not start an Intuit paid trial from this flow.</li>
+<li>If ngrok shows <strong>You are about to visit</strong>, click
+<strong>Visit Site</strong>.</li>
+<li>Success is the browser text <strong>NGAME: OAuth complete. You can
+close this tab.</strong></li>
+</ol>
+<p>ngrok may log 200 then 502. The 502 after success is a second hit
+after port 8000 closed. That is success.</p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr>
+<th>URL</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>http://localhost:5001/dashboard</code></td>
+<td>The dashboard page on this PC. Not registered at Intuit.</td>
+</tr>
+<tr>
+<td><code>https://(ngrok host)/callback</code></td>
+<td>This Connect click only. Registered in Step 15.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>didn’t connect / <code>redirect_uri</code> invalid</td>
+<td>Steps 14 and 15 do not match Window A. Fix them. Do not keep
+rerunning the script until they match.</td>
+</tr>
+<tr>
+<td>502 on Visit Site before success</td>
+<td>Listener died. Window A still up: in Window B run
+<code>python run_data_extraction.py</code> again and Connect
+immediately.</td>
+</tr>
+<tr>
+<td><strong>welcome</strong>, then <strong>Uh, oh, there’s a connection
+problem</strong>, and Window B says <strong>timed out</strong></td>
+<td>Same cause. The listener closed while you were signing in. Run
+<code>python run_data_extraction.py</code> again and finish Connect
+before three minutes.</td>
+</tr>
+<tr>
+<td><strong>Sorry, but undefined didn’t connect</strong></td>
+<td><code>quickbooks_config.json</code> still has
+<code>YOUR_INTUIT_CLIENT_ID</code> or
+<code>YOUR_INTUIT_CLIENT_SECRET</code>, or the values are the
+Development keys. Stop. Finish Step 8 with the Production values. The
+search in Step 16 must print nothing before you run the script
+again.</td>
+</tr>
+<tr>
+<td>200 then 502 after “OAuth complete”</td>
+<td>Success. Go to Step 18.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The browser says OAuth complete.</p>
+<hr />
+<h2 id="step-18-stop-ngrok-and-confirm-tokens">Step 18 — Stop ngrok and
+confirm tokens</h2>
+<ol type="1">
+<li>In Window A, press <strong>Ctrl+C</strong>.</li>
+<li>Open <code>quickbooks_config.json</code> and confirm
+<code>access_token</code>, <code>refresh_token</code>, and
+<code>realm_id</code> are non-empty, <code>environment</code> is
+<code>production</code>, and the client id is still the Production
+id.</li>
+</ol>
+<p>Daily operation does not need ngrok. A later
+<code>invalid_grant</code> means you repeat Steps 13–17. The scheduler
+will not open a browser for you. It will record
+<code>reconnect_required</code>.</p>
+<p><strong>Done when:</strong> Tokens and <code>realm_id</code> are
+filled, and ngrok is stopped.</p>
+<hr />
+<h2 id="step-19-rename-leftover-sandbox-files-safe-if-none-exist">Step
+19 — Rename leftover sandbox files (safe if none exist)</h2>
+<p>A sandbox matrix must not become the live baseline.</p>
+<p>In Window B, from <code>ngame-cm</code>:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="fu">Test-Path</span> <span class="op">.</span>\NGAME_Training_Matrix<span class="op">.</span><span class="fu">xlsx</span><span class="op">)</span> <span class="op">{</span> <span class="fu">Rename-Item</span> <span class="op">.</span>\NGAME_Training_Matrix<span class="op">.</span><span class="fu">xlsx</span> NGAME_Training_Matrix_sandbox<span class="op">.</span><span class="fu">xlsx</span> <span class="op">}</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="fu">Test-Path</span> <span class="op">.</span>\quickbooks_ontology_Yesterday<span class="op">.</span><span class="fu">ttl</span><span class="op">)</span> <span class="op">{</span> <span class="fu">Rename-Item</span> <span class="op">.</span>\quickbooks_ontology_Yesterday<span class="op">.</span><span class="fu">ttl</span> quickbooks_ontology_Yesterday_sandbox<span class="op">.</span><span class="fu">ttl</span> <span class="op">}</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="fu">Test-Path</span> <span class="op">.</span>\quickbooks_ontology_Today<span class="op">.</span><span class="fu">ttl</span><span class="op">)</span> <span class="op">{</span> <span class="fu">Rename-Item</span> <span class="op">.</span>\quickbooks_ontology_Today<span class="op">.</span><span class="fu">ttl</span> quickbooks_ontology_Today_sandbox<span class="op">.</span><span class="fu">ttl</span> <span class="op">}</span></span></code></pre></div>
+<p>If the files are absent, nothing happens. Continue.</p>
+<p><strong>Done when:</strong> Those files were renamed, or they were
+not there.</p>
+<hr />
+<h2 id="step-20-install-ollama">Step 20 — Install Ollama</h2>
+<p>Ollama stays on this PC. Training (under 30 matrix columns) does not
+need it. Phase II does. If Ollama is down in Phase II, the scheduler
+records <code>ollama_unavailable</code> and does not invent a fraud
+result. Install it now. This download is the Ollama program. It does not
+ask for a model size. The size is the model name you pull in Step
+21.</p>
+<ol type="1">
+<li>Open <a href="https://ollama.com/download">ollama.com/download</a>.
+Select <strong>Windows</strong>.</li>
+<li>Copy the install command on that screen. It is the line that starts
+with <code>irm</code>.</li>
+<li>Paste that command into the PowerShell window whose prompt shows
+<code>(.venv)</code>, then press <strong>Enter</strong>. Leave that
+window alone until the command finishes. Do not click <strong>Download
+Manually</strong>. Do not use <strong>Building with an
+agent</strong>.</li>
+</ol>
+<p>The command on the screen is:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>ollama<span class="op">.</span><span class="fu">com</span><span class="op">/</span>install<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+<ol start="4" type="1">
+<li>When the window says <strong>Install complete. Run ‘ollama’ from the
+command line.</strong>, leave Ollama running. Its icon sits in the
+bottom tray of apps, at the right end of the taskbar near the clock. If
+you do not see it, click the <strong>^</strong> arrow there. That
+hidden-icons row is the same tray.</li>
+<li>Open a <strong>new</strong> PowerShell window. The window that ran
+the installer may not see <code>ollama</code> yet.</li>
+</ol>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ollama <span class="op">--</span>version</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ollama list</span></code></pre></div>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ollama</code> is not recognized</td>
+<td>New PowerShell window. If the <code>irm</code> command has not been
+run in the <code>(.venv)</code> window, copy it from the download screen
+and paste it there again.</td>
+</tr>
+<tr>
+<td>No icon in the bottom tray of apps, including under the
+<strong>^</strong> arrow</td>
+<td>Start <strong>Ollama</strong> from the Start menu. Leave it running.
+It should also start at sign-in.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> <code>ollama --version</code> works, the
+Ollama icon is in the bottom tray of apps, and <code>ollama list</code>
+prints only the header <strong>NAME ID SIZE MODIFIED</strong> with no
+model rows. The model is Step 21.</p>
+<hr />
+<h2 id="step-21-pull-the-model-and-align-the-name">Step 21 — Pull the
+model and align the name</h2>
+<p>Pull <strong><code>llama2:7b</code></strong> on this mini PC unless
+Settings shows about 16 GB of RAM. This GEEKOM does. Pull
+<strong><code>llama3.1:8b</code></strong>. A large free disk is not a
+reason to pull a model larger than that. A model that does not fit in
+memory can freeze the PC. This is not a change to CPI or z
+thresholds.</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ollama pull llama3<span class="op">.</span><span class="dv">1</span><span class="op">:</span>8b</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ollama list</span></code></pre></div>
+<p>Leave <code>ngame_llm_analysis_agent.py</code> alone. Do not type
+anything from that file at the PowerShell prompt.</p>
+<p>If Settings shows less than about 16 GB, pull <code>llama2:7b</code>
+instead. Then open <code>ngame_llm_analysis_agent.py</code> in Notepad
+and change the quoted model tag to <code>llama2:7b</code>.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PC freezes</td>
+<td>Close browsers. Pull <code>gemma2:2b</code> instead, and change the
+quoted model tag in <code>ngame_llm_analysis_agent.py</code> to that
+same name.</td>
+</tr>
+<tr>
+<td><strong>The term ‘self.model_name’ is not recognized</strong></td>
+<td>You typed a line from the Python file. It is not a PowerShell
+command. Leave the file alone and continue.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The NAME column from
+<code>ollama list</code> is <code>llama3.1:8b</code>.</p>
+<p>Do not set <code>email_enabled</code> to true in
+<code>ngame_management_warning_agent.py</code>. It defaults to false.
+Leave it false. Mail is not this install.</p>
+<hr />
+<h2 id="step-22-smoke-test-ollama-then-set-the-cm-clock-file">Step 22 —
+Smoke-test Ollama, then set the CM clock file</h2>
+<p>Smoke test (use the tag you actually pulled):</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ollama run llama3<span class="op">.</span><span class="dv">1</span><span class="op">:</span>8b <span class="st">&quot;Reply with the single word OK.&quot;</span></span></code></pre></div>
+<p>Ollama prints <strong>OK</strong> and returns to the PowerShell
+prompt. Do not type <code>/bye</code>. That word is only for an open
+Ollama chat. PowerShell answers <strong>The term ‘/bye’ is not
+recognized</strong>. The smoke test is already done.</p>
+<p>Then edit <code>Documents\ngame-cm\ngame_cm_config.json</code>. No
+secrets go in this file. The clone includes it. In the PowerShell window
+whose prompt ends in <code>\ngame-cm</code>:</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>notepad <span class="op">.</span>\ngame_cm_config<span class="op">.</span><span class="fu">json</span></span></code></pre></div>
+<p>Notepad opens the file that is already there. Set the site’s zone and
+an hour <strong>after</strong> the bookkeeper usually posts. Leave the
+scheduler <strong>off</strong>:</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;enabled&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;America/Los_Angeles&quot;</span><span class="fu">,</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;run_hour_local&quot;</span><span class="fu">:</span> <span class="dv">18</span><span class="fu">,</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;phase1_weekdays_only&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;phase2_every_calendar_day&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;dashboard_is_launcher&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><code>run_hour_local</code> is an integer 0–23. “Today” is the
+calendar date in <code>timezone</code>. Keep both phase flags as shown.
+Do not add a second training-versus-fraud switch. The matrix column
+count still decides that.</p>
+<p><code>enabled</code> stays <strong>false</strong> until Step 31. A
+running scheduler will idle and will not call QuickBooks.</p>
+<p><strong>Done when:</strong> Ollama answered, and the JSON file is
+saved with <code>enabled</code> false and the site’s zone and hour.</p>
+<hr />
+<h2 id="step-23-start-the-dashboard-by-hand-once">Step 23 — Start the
+dashboard by hand once</h2>
+<p>The page is the lamp. Empty lines are normal on the first open. Do
+not click a run button.</p>
+<ol type="1">
+<li>Stop Window B if <code>run_data_extraction.py</code> is still
+running (Ctrl+C). OAuth is already saved.</li>
+<li>In PowerShell, <code>(.venv)</code> active:</li>
+</ol>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> ngame_ui</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>python app-simple<span class="op">.</span><span class="fu">py</span></span></code></pre></div>
+<ol start="3" type="1">
+<li>Windows may ask <strong>Do you want to allow public and private
+networks to access this app?</strong> Click <strong>Cancel</strong>. The
+page is <code>http://localhost:5001/dashboard</code> on this PC. Allow
+would open port 5001 to the network, and this page has no login.</li>
+<li>Open <strong>http://localhost:5001/dashboard</strong> in
+Chrome.</li>
+<li>The title is <strong>NGAME Daily Monitoring</strong>. Under
+<strong>NGAME Operations</strong> you see <strong>Last run</strong>,
+<strong>Last result</strong>, <strong>Scheduled successes</strong>, and
+<strong>Next scheduled</strong>. They may read as blanks.
+<strong>Notifications</strong> is on the page. Email and Text are off.
+Do not turn them on. Do not click <strong>Consultant override</strong>
+if that button is showing. <code>dashboard_is_launcher</code> is still
+true until Step 31, so a training card may also be on the page. Leave
+it.</li>
+<li><code>GET /api/...</code> lines in PowerShell are the page
+refreshing. They are not a second run.</li>
+<li>Press <strong>Ctrl+C</strong> to stop this test. Step 24 starts it
+another way.</li>
+</ol>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>No module named 'flask'</code></td>
+<td>Activate <code>.venv</code>, then <code>cd ngame_ui</code> and run
+<code>python app-simple.py</code>.</td>
+</tr>
+<tr>
+<td><strong>Do you want to allow public and private networks to access
+this app?</strong></td>
+<td>Click <strong>Cancel</strong>. Then open
+<code>http://localhost:5001/dashboard</code> in Chrome.</td>
+</tr>
+<tr>
+<td>Page will not load</td>
+<td>The window must still be running the script. Port is
+<strong>5001</strong>, not 8000.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The dashboard loaded, and you stopped it
+with Ctrl+C.</p>
+<hr />
+<h2 id="step-24-put-the-dashboard-in-the-startup-folder">Step 24 — Put
+the dashboard in the Startup folder</h2>
+<p>After you sign in, Windows runs the shortcuts in the Startup folder.
+This step puts one there so the dashboard starts by itself. In File
+Explorer, open <code>Documents\ngame-cm</code>. Double-click the file
+named <strong>start-dashboard</strong>. Its Type is <strong>Windows
+Batch File</strong>. Explorer does not show the <code>.bat</code>
+ending. The shortcut that stays in Startup is named <strong>NGAME
+Dashboard</strong>. It points at
+<strong>start-dashboard-silent</strong>, which stays in
+<code>Documents\ngame-cm</code> and starts that same page with no
+window. The dashboard does not use Windows Task Scheduler.</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\start-dashboard<span class="op">.</span><span class="fu">bat</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\start-dashboard-silent<span class="op">.</span><span class="fu">vbs</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">New-Item</span> <span class="op">-</span>ItemType Directory <span class="op">-</span>Force <span class="op">-</span>Path <span class="st">&quot;.\logs&quot;</span> <span class="op">|</span> <span class="fu">Out-Null</span></span></code></pre></div>
+<ol type="1">
+<li>In File Explorer, open <code>Documents\ngame-cm</code>. Double-click
+<strong>start-dashboard</strong>. The Type column says <strong>Windows
+Batch File</strong>. Explorer does not show <code>.bat</code>.</li>
+<li>If Windows asks <strong>Do you want to allow public and private
+networks to access this app?</strong> for Python, click
+<strong>Cancel</strong>. This is the same question as Step 23. The
+program name may be <code>pythonw.exe</code>.</li>
+<li>Wait about 15 seconds. Open
+<strong>http://localhost:5001/dashboard</strong> in Chrome.</li>
+<li>The page is up because <strong>start-dashboard</strong> is still
+running, with no window. Stop it: press <strong>Ctrl+Shift+Esc</strong>.
+In Task Manager, find <strong>pythonw.exe</strong> (it may be listed as
+Python). Select it and choose <strong>End task</strong>. Refresh Chrome.
+The page should fail to load. That means the test stopped.</li>
+<li>Turn <strong>Caps Lock</strong> off. Press the Windows key and a
+lowercase <strong>r</strong>. A small <strong>Run</strong> box appears.
+Type <code>shell:startup</code> and press Enter. You should see the
+Ollama shortcut in that folder. If you see a blue <strong>Start</strong>
+button and a timer, that is a screen recorder. Close it. Do not click
+<strong>Start</strong>.</li>
+<li>In the <code>Documents\ngame-cm</code> window, right-click
+<strong>start-dashboard-silent</strong>. Click <strong>Show more
+options</strong>. Click <strong>Create shortcut</strong>. A shortcut
+appears in that same folder. Copy that shortcut into the Startup folder,
+next to the Ollama shortcut. Name the Startup copy <strong>NGAME
+Dashboard</strong>. Leave the original
+<strong>start-dashboard-silent</strong> file in
+<code>Documents\ngame-cm</code>. Do not copy that file itself into
+Startup. If a copy of the file is already in Startup, delete that
+copy.</li>
+</ol>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Get-Item</code> cannot find the bat</td>
+<td>You are not in <code>Documents\ngame-cm</code>.</td>
+</tr>
+<tr>
+<td>A blue <strong>Start</strong> button and a timer, or no
+<strong>Run</strong> box</td>
+<td>Caps Lock may be on. Turn it off. Close the recorder. Do not click
+<strong>Start</strong>. Press the Windows key and a lowercase
+<strong>r</strong>. Type <code>shell:startup</code> in the
+<strong>Run</strong> box.</td>
+</tr>
+<tr>
+<td>You copied <strong>start-dashboard-silent</strong> into Startup</td>
+<td>Delete that copy. Startup must hold a shortcut. The original file
+stays in <code>Documents\ngame-cm</code>.</td>
+</tr>
+<tr>
+<td><strong>Do you want to allow public and private networks to access
+this app?</strong></td>
+<td>Click <strong>Cancel</strong>. Same question as Step 23. Then open
+the dashboard in Chrome.</td>
+</tr>
+<tr>
+<td>The page says <strong>404</strong></td>
+<td>The address must be <code>http://localhost:5001/dashboard</code>
+with no extra word after <code>dashboard</code>. Open that in
+Chrome.</td>
+</tr>
+<tr>
+<td>The site cannot be reached</td>
+<td>The batch file did not stay running. Open
+<code>Documents\ngame-cm\logs\dashboard.err.log</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> Startup shows <strong>NGAME
+Dashboard</strong> next to the Ollama shortcut, the original
+<strong>start-dashboard-silent</strong> file is still in
+<code>Documents\ngame-cm</code>, and the batch file already loaded the
+page once.</p>
+<hr />
+<h2 id="step-25-confirm-the-dashboard-survives-sign-in">Step 25 —
+Confirm the dashboard survives sign-in</h2>
+<p>This is a Windows sign-out, or a full <strong>Restart</strong>. A
+Restart is enough. Windows may warn that files are still open. Continue
+the Restart.</p>
+<ol type="1">
+<li>Do not double-click <strong>start-dashboard</strong> in
+<code>Documents\ngame-cm</code>. That file’s Type is <strong>Windows
+Batch File</strong>. Leaving it unopened is the test. The <strong>NGAME
+Dashboard</strong> shortcut in Startup must start the page by
+itself.</li>
+<li>Sign out of Windows and sign back in, or use
+<strong>Restart</strong>.</li>
+<li>After the desktop is back, wait about 45 seconds.</li>
+<li>Open <strong>http://localhost:5001/dashboard</strong> in Chrome. It
+should load with no PowerShell window. If Windows asks <strong>Do you
+want to allow public and private networks to access this app?</strong>,
+click <strong>Cancel</strong>.</li>
+<li>Confirm Sleep is still Never. Open <strong>Settings → System → Power
+→ Screen, sleep &amp; hibernate timeouts</strong>. <strong>Make my
+device sleep after</strong> must be <strong>Never</strong>. This is Step
+2. Do it now if you skipped it.</li>
+</ol>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Page does not load</td>
+<td>Shortcut <strong>Target</strong> in <code>shell:startup</code> must
+be <code>…\Documents\ngame-cm\start-dashboard-silent.vbs</code>. Read
+<code>logs\dashboard.err.log</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> After a Windows <strong>Restart</strong>,
+<strong>http://localhost:5001/dashboard</strong> loads in Chrome with no
+PowerShell window. The four lamp lines are on the page.</p>
+<hr />
+<h2 id="step-26-confirm-the-scheduler-idles">Step 26 — Confirm the
+scheduler idles</h2>
+<p><code>ngame_scheduler.py</code> is the clock. It checks about once a
+minute. It is not a daily Task Scheduler job, and it is not cron.</p>
+<p>While <code>enabled</code> is false it must not pull QuickBooks.</p>
+<p>The clone includes <code>ngame_scheduler.py</code>,
+<code>ngame_cm_config.py</code>, <code>ngame_run_journal.py</code>,
+<code>ngame_run_lock.py</code>, <code>start-scheduler.bat</code>, and
+<code>start-scheduler-silent.vbs</code> in
+<code>Documents\ngame-cm</code>. They are not in a subfolder. Do not
+copy them from another computer.</p>
+<p><code>ngame_cm_config.json</code> is the file from Step 22. Leave it
+there.</p>
+<p>Open PowerShell:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>python ngame_scheduler<span class="op">.</span><span class="fu">py</span> <span class="op">--</span>once</span></code></pre></div>
+<p>You want <strong>enabled=False</strong> and the line <strong>enabled
+is false — will idle until soak turns it on.</strong> The prompt then
+comes back. You will not see <strong>polling every 60s</strong>. That
+line appears only if the scheduler stays in a loop. Its absence means
+this check already finished. If it starts a QuickBooks pull, set
+<code>enabled</code> back to false and do not continue. If the window
+does say <strong>polling every 60s</strong>, press
+<strong>Ctrl+C</strong>. Step 27 starts the scheduler at sign-in.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>can't open file</code> and
+<code>No such file or directory</code></td>
+<td>You are not in <code>Documents\ngame-cm</code>. Run the
+<code>cd</code> line again. Do not copy these files from another
+computer.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The prompt is back, the window showed
+<strong>enabled=False</strong> and <strong>enabled is false — will idle
+until soak turns it on.</strong>, and it did not say <strong>polling
+every 60s</strong>. It did not pull QuickBooks.</p>
+<hr />
+<h2 id="step-27-put-the-scheduler-in-the-startup-folder">Step 27 — Put
+the scheduler in the Startup folder</h2>
+<p>The two scheduler files are already in
+<code>Documents\ngame-cm</code> from Step 26. In File Explorer the names
+are <strong>start-scheduler</strong> and
+<strong>start-scheduler-silent</strong>. The Type for
+<strong>start-scheduler</strong> is <strong>Windows Batch File</strong>.
+Explorer does not show the <code>.bat</code> ending. That bat sets
+<code>NGAME_UNATTENDED=1</code> so a dead token is written to the
+journal instead of opening a browser.</p>
+<p>Do not double-click <strong>start-scheduler</strong>. Step 26 already
+proved the idle check. The sign-in start is a shortcut named
+<strong>NGAME Scheduler</strong>. It points at
+<strong>start-scheduler-silent</strong>, which stays in
+<code>Documents\ngame-cm</code>.</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\start-scheduler<span class="op">.</span><span class="fu">bat</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\start-scheduler-silent<span class="op">.</span><span class="fu">vbs</span></span></code></pre></div>
+<ol type="1">
+<li>Turn <strong>Caps Lock</strong> off. Press the Windows key and a
+lowercase <strong>r</strong>. A small <strong>Run</strong> box appears.
+Type <code>shell:startup</code> and press Enter. You should see the
+Ollama shortcut and <strong>NGAME Dashboard</strong>. If you see a blue
+<strong>Start</strong> button and a timer, that is a screen recorder.
+Close it. Do not click <strong>Start</strong>.</li>
+<li>In the <code>Documents\ngame-cm</code> window, right-click
+<strong>start-scheduler-silent</strong>. Click <strong>Show more
+options</strong>. Click <strong>Create shortcut</strong>. A shortcut
+appears in that same folder. Copy that shortcut into the Startup folder,
+next to <strong>NGAME Dashboard</strong>. Name the Startup copy
+<strong>NGAME Scheduler</strong>. Leave the original
+<strong>start-scheduler-silent</strong> file in
+<code>Documents\ngame-cm</code>. Do not copy that file itself into
+Startup.</li>
+<li>Do not add a Task Scheduler task that runs
+<code>ngame_dual_mode.py</code> every day.</li>
+</ol>
+<p>Windows Startup runs at sign-in. It does not restart a crashed
+process by itself. If <code>logs\scheduler.log</code> stops after a
+crash, sign out and back in. Do not fix that with a daily dual-mode
+task.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Get-Item</code> cannot find the bat</td>
+<td>You are not in <code>Documents\ngame-cm</code>. Run the
+<code>cd</code> line again.</td>
+</tr>
+<tr>
+<td>A blue <strong>Start</strong> button and a timer, or no
+<strong>Run</strong> box</td>
+<td>Caps Lock may be on. Turn it off. Close the recorder. Do not click
+<strong>Start</strong>. Press the Windows key and a lowercase
+<strong>r</strong>. Type <code>shell:startup</code> in the
+<strong>Run</strong> box.</td>
+</tr>
+<tr>
+<td>You copied <strong>start-scheduler-silent</strong> into Startup</td>
+<td>Delete that copy. Startup must hold a shortcut. The original file
+stays in <code>Documents\ngame-cm</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> Startup shows <strong>NGAME
+Scheduler</strong> next to <strong>NGAME Dashboard</strong>, and the
+original <strong>start-scheduler-silent</strong> file is still in
+<code>Documents\ngame-cm</code>.</p>
+<hr />
+<h2 id="step-28-confirm-the-scheduler-survives-sign-in">Step 28 —
+Confirm the scheduler survives sign-in</h2>
+<p>This is a Windows sign-out, or a full <strong>Restart</strong>. A
+Restart is enough. Windows may warn that files are still open. Continue
+the Restart. Do not double-click <strong>start-scheduler</strong> in
+<code>Documents\ngame-cm</code>. The <strong>NGAME Scheduler</strong>
+shortcut must start it.</p>
+<ol type="1">
+<li>Sign out of Windows and sign back in, or use
+<strong>Restart</strong>.</li>
+<li>After the desktop is back, wait about 45 seconds.</li>
+<li>Open <code>Documents\ngame-cm\logs\scheduler.log</code>. File
+Explorer may show <strong>Start backup</strong> at the left of the
+address bar even after you are inside the logs folder. That is Windows
+offering to back up folders. Do not click it. The folder is the right
+one when the address bar ends in <code>ngame-cm\logs</code> and you see
+four files: <strong>dashboard</strong>, <strong>dashboard.err</strong>,
+<strong>scheduler</strong>, and <strong>scheduler.err</strong>. The Type
+column says <strong>Text Document</strong>. Explorer does not show the
+<code>.log</code> ending, so <strong>scheduler</strong> is
+<code>scheduler.log</code>.</li>
+<li>It should show <strong>enabled=False</strong>, <strong>enabled is
+false — will idle until soak turns it on.</strong>, and <strong>polling
+every 60s</strong>. That polling line is expected here. The Startup
+shortcut keeps the scheduler running, with no window. Do not press
+Ctrl+C. There is nothing to stop.</li>
+<li>Open <strong>http://localhost:5001/dashboard</strong> in Chrome. It
+should load with no PowerShell window. The four lamp lines are on the
+page. If Windows asks <strong>Do you want to allow public and private
+networks to access this app?</strong>, click
+<strong>Cancel</strong>.</li>
+</ol>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No scheduler.log</td>
+<td>The shortcut target is wrong, or <code>.venv</code> is missing.
+Double-click <code>start-scheduler.bat</code> once and read
+<code>logs\scheduler.err.log</code>.</td>
+</tr>
+<tr>
+<td><strong>scheduler</strong> is empty, and
+<strong>scheduler.err</strong> is empty</td>
+<td><code>pythonw</code> is holding the lines in memory. In
+<code>start-scheduler.bat</code>, on its own line before
+<code>pythonw.exe</code>, add <code>set PYTHONUNBUFFERED=1</code>. The
+<strong>Details</strong> tab can show four rows, each named
+<code>pythonw.exe</code>. The name does not say which script it is. In
+PowerShell run
+<code>Get-CimInstance Win32_Process -Filter "Name = 'pythonw.exe'" | Select-Object ProcessId, CommandLine | Format-List</code>.
+The list may show two of each. End task on one ProcessId whose Command
+line contains <code>ngame_scheduler.py</code>. The other scheduler
+ProcessId may disappear with it. That is the right result. Leave every
+ProcessId whose Command line contains <code>app-simple.py</code>.
+Double-click <strong>start-scheduler</strong> once. Open
+<strong>scheduler</strong> again.</td>
+</tr>
+<tr>
+<td>A window pops up, shows a little activity, then goes blank</td>
+<td>That window is <strong>start-scheduler</strong>. Leave it open. The
+lines are not on that window. They are in
+<code>Documents\ngame-cm\logs</code>, in the file named
+<strong>scheduler</strong>. Its Type is <strong>Text
+Document</strong>.</td>
+</tr>
+<tr>
+<td>The log shows a QuickBooks pull</td>
+<td><code>enabled</code> is true too early. Set it false, end
+<code>pythonw.exe</code>, sign in again.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> After a Windows <strong>Restart</strong>,
+<code>scheduler.log</code> shows <strong>enabled=False</strong>, the
+idle line, and <strong>polling every 60s</strong>, and
+<strong>http://localhost:5001/dashboard</strong> loads in Chrome with no
+PowerShell window. The four lamp lines are on the page. No Windows
+question is required.</p>
+<hr />
+<h2 id="step-29-prove-the-lock">Step 29 — Prove the lock</h2>
+<p>Two pictures at once will scramble one day’s files. Do this
+<strong>before</strong> Step 31.</p>
+<p>This clone has no green <strong>Consultant override</strong> button.
+Do not click <strong>Run Training Day</strong>. The second start is a
+second PowerShell window.</p>
+<p>Confirm the lock file is present before any pull:</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\ngame_pipeline_guard<span class="op">.</span><span class="fu">py</span></span></code></pre></div>
+<ol type="1">
+<li>From <code>ngame-cm</code>, with <code>(.venv)</code> active, start
+one run and leave it going:</li>
+</ol>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>python run_training_flow<span class="op">.</span><span class="fu">py</span></span></code></pre></div>
+<ol start="2" type="1">
+<li>The first window stops at <strong>Add Day 1 of 30 to the training
+matrix? (y/n)?</strong> Do not answer yet.</li>
+<li>While that question is still on screen, open a second PowerShell and
+run the same three lines.</li>
+<li>The second start must refuse. The CLI exits <strong>2</strong> and
+prints:
+<code>NGAME pipeline already running (cross-process lock busy). Do not start a second pull.</code></li>
+<li>Go back to the first window. Type <strong>y</strong> and press
+Enter. That starts the one live picture. <strong>n</strong> pauses and
+does not pull QuickBooks.</li>
+<li>Wait until the first run finishes. The line above the ending is
+<strong>Day 1 recorded — 29 day(s) remaining.</strong> and <strong>(Live
+mode — return tomorrow to add Day 2.)</strong> Then the window ends with
+<strong>Launcher completed successfully!</strong> Do not run the script
+again to add Day 2. That “return tomorrow” sentence is the launcher’s
+old daily click. The clock adds later days after Step 31. You do
+not.</li>
+</ol>
+<p>The second window returns to <code>\ngame-cm&gt;</code> and the line
+just above that prompt is <strong>NGAME pipeline already running
+(cross-process lock busy). Do not start a second pull.</strong></p>
+<p>That refusal is evidence. It is not a missed day.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Get-Item</code> cannot find
+<code>ngame_pipeline_guard.py</code></td>
+<td>Stop. Do not start the training run. From <code>ngame-cm</code> run
+<code>git fetch origin</code>, then
+<code>git checkout origin/main -- ngame_pipeline_guard.py run_training_flow.py run_fraud_analysis.py ngame_dual_mode.py ngame_quickbooks_oauth.py</code>.
+Do not replace <code>start-scheduler.bat</code>.</td>
+</tr>
+<tr>
+<td>The second run also pulls QuickBooks</td>
+<td>Stop. Do not arm Step 31. The lock is not in front of that
+launcher.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> The second window returned to
+<code>\ngame-cm&gt;</code> with the lock-busy line just above the
+prompt, and the first window showed <strong>Day 1 recorded — 29 day(s)
+remaining.</strong> and then <strong>Launcher completed
+successfully!</strong></p>
+<hr />
+<h2 id="step-30-one-consultant-picture-before-the-14-days">Step 30 — One
+consultant picture, before the 14 days</h2>
+<p>Still with <code>enabled</code> false, confirm the live picture is on
+disk. Step 29 already recorded Day 1. The launcher’s line <strong>return
+tomorrow to add Day 2</strong> is not your next click. Do not run
+<code>python run_training_flow.py</code> again.</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-Item</span> <span class="op">.</span>\NGAME_Training_Matrix<span class="op">.</span><span class="fu">xlsx</span></span></code></pre></div>
+<p><code>Get-Item</code> prints a path under
+<code>Documents\ngame-cm</code>. This click was yours. It is not the
+FRP’s habit. It happened <strong>before</strong> you arm the clock. A
+successful dashboard or CLI picture <strong>after</strong> the clock is
+armed fails the 14-day proof.</p>
+<p>On a later day you may stop here and leave the PC on, with
+<code>enabled</code> still false. That night does not take a
+picture.</p>
+<p><strong>Ordinary site.</strong> Leave the Day 1 workbook in place.
+After Step 31 the clock adds the next business-day column. Do not run
+<code>python run_training_flow.py</code> again to add Day 2.</p>
+<p><strong>Shortcut, only if this site is not building a new
+profile.</strong> While <code>enabled</code> is still false, replace
+<code>NGAME_Training_Matrix.xlsx</code> with a finished 30-day workbook
+of the same name, in <code>Documents\ngame-cm</code>. Do not put it in
+<code>Documents\ngame</code>. Explorer hides <code>.xlsx</code>. Open
+the file. A finished workbook has a filled <strong>Day 30</strong>
+column. Do not run the training script after this replacement. The clock
+will then take anomaly pictures against that existing profile. It will
+not learn this company’s new 30 days.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>didn’t connect / <code>invalid_grant</code></td>
+<td>Repeat Steps 13–18 with the tunnel up. Then this step again.</td>
+</tr>
+<tr>
+<td>Day 3 / ontology failed</td>
+<td>Repeat Step 19. The first live day should be Day 1.</td>
+</tr>
+<tr>
+<td>The only Excel file is <strong>NGAME_Training_Matrix</strong> and it
+stops at Day 1</td>
+<td>That is yesterday’s file. Replace it with the Day 30 workbook, same
+name, in <code>Documents\ngame-cm</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> One live picture succeeded,
+<code>enabled</code> is still false, and either Day 1 is on file for the
+clock to continue, or, if you used the shortcut,
+<strong>NGAME_Training_Matrix</strong> shows a filled <strong>Day
+30</strong> column.</p>
+<p>You can stop here and leave the PC on. Do not edit
+<code>ngame_cm_config.json</code> until you are ready for Step 31. While
+<code>enabled</code> is false, the scheduler does not pull QuickBooks,
+including at 6:00 PM. Lock with <strong>Ctrl+Alt+Delete</strong>, then
+<strong>Lock</strong>. Do not use the Windows key and
+<strong>L</strong>. On a Logitech keyboard that opens Logi and leaves
+the screen unlocked. Leave the power cord in. When you come back, start
+at Step 31.</p>
+<hr />
+<h2 id="step-31-arm-the-clock-then-leave-it-alone">Step 31 — Arm the
+clock, then leave it alone</h2>
+<p>You cannot finish this step’s proof on the install day. The proof is
+14 scheduled successes in a row, plus one failed day that the
+<strong>scheduler</strong> recovers without a click.</p>
+<p>The screen can say <strong>Fraud Analysis Mode: 31 days of training
+data available</strong> on a finished 30-day workbook. That count is
+this program’s column count. It is not a 31st training day. Leave the
+workbook alone.</p>
+<p>A silent scheduler has no PowerShell window. Two process IDs for
+<code>ngame_scheduler.py</code> are one clock. Two for
+<code>app-simple.py</code> are one dashboard. Leave them. Identify them
+with:</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Get-CimInstance</span> Win32_Process <span class="op">-</span>Filter <span class="st">&quot;Name = &#39;python.exe&#39; OR Name = &#39;pythonw.exe&#39;&quot;</span> <span class="op">|</span> <span class="fu">Where-Object</span> <span class="op">{</span> <span class="va">$_</span><span class="op">.</span><span class="fu">CommandLine</span> <span class="op">-like</span> <span class="st">&#39;*ngame_scheduler.py*&#39;</span> <span class="op">-or</span> <span class="va">$_</span><span class="op">.</span><span class="fu">CommandLine</span> <span class="op">-like</span> <span class="st">&#39;*app-simple.py*&#39;</span> <span class="op">}</span> <span class="op">|</span> <span class="fu">Format-List</span> ProcessId<span class="op">,</span> Name<span class="op">,</span> CommandLine</span></code></pre></div>
+<p>Do not <code>git pull</code> on a PC that is already running. A
+missing file is brought in by name, for example
+<code>git fetch origin</code> then
+<code>git checkout origin/main -- ngame_soak_check.py</code>, and only
+after that file is in the published clone.</p>
+<p><strong>What the next site does</strong></p>
+<ol type="1">
+<li>In a second PowerShell window, not the scheduler window:</li>
+</ol>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>c <span class="st">&quot;from phase2_director_agent import Phase2DirectorAgent; print(&#39;ok&#39;)&quot;</span></span></code></pre></div>
+<p>That window prints <strong>ok</strong>, then returns to the prompt.
+Close it. If it prints <strong>ImportError: cannot import name
+Phase2DirectorAgent</strong>, stop. Do not arm the clock.</p>
+<ol start="2" type="1">
+<li><p>In <code>ngame_cm_config.json</code> set
+<code>"enabled": true</code> and
+<code>"dashboard_is_launcher": false</code>. Leave
+<code>"run_hour_local"</code> at the site’s hour. A typical hour is
+<strong>18</strong>, after the bookkeeper has posted. Save. Do not set
+the hour to the current clock just to force a pull.</p></li>
+<li><p>Start the clock in PowerShell. Leave that window open. It does
+not return to the prompt. Do not double-click
+<strong>start-scheduler</strong>. That only blinks a
+<strong>cmd</strong> window, and the window disappears.</p></li>
+</ol>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>python ngame_scheduler<span class="op">.</span><span class="fu">py</span></span></code></pre></div>
+<p>Before the run hour you want <strong>enabled=True</strong> and
+<strong>polling every 60s</strong>. You do not want <strong>will idle
+until soak turns it on</strong>, and you do not want <strong>NGAME
+scheduler: starting ngame_dual_mode.py</strong>.</p>
+<ol start="4" type="1">
+<li><p>One scheduled failure, then a recovery with no click. On a
+wireless mini there is no cable to pull. Turn <strong>Wi-Fi</strong> off
+and leave the power cord plugged in. Let the scheduled hour pass. Turn
+<strong>Wi-Fi</strong> back on. Do not click a run button. The scheduler
+records the failure and, once the network is back, a later scheduled
+success is the recovery. Do not clear the log. If Notepad is showing an
+old tab, close it without saving and open
+<code>logs\scheduler.log</code> again.</p></li>
+<li><p>Sleep is <strong>Never</strong>. The power cord stays plugged in.
+When you leave, press <strong>Ctrl+Alt+Delete</strong>, then click
+<strong>Lock</strong>. Do not click <strong>Sign out</strong>. Do not
+use the Windows key and <strong>L</strong> on a Logitech keyboard. The
+locked screen may go dark and the monitor may say <strong>No
+input…</strong> while the light on the computer stays on. Leave it. Do
+not unplug the power cord. Unplugging it stops the clock until the next
+sign-in. The files stay on the disk.</p></li>
+</ol>
+<p>The fourteen successes are the scheduled nights after the recovery.
+While the matrix is still building, Saturday and Sunday do not add a
+column. After 30 business-day columns, Saturday and Sunday are anomaly
+pictures. One missed night resets the count.</p>
+<p>When you believe the fourteen are in a row and the failure recovered
+without a click, on this PC:</p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>python ngame_soak_check<span class="op">.</span><span class="fu">py</span></span></code></pre></div>
+<p>CM is claimable only when that command prints
+<code>gate: PASSED</code>. Anything else, including
+<code>NOT PASSED</code>, means it is not done. The checker does not turn
+the scheduler on and does not start a run.</p>
+<p><strong>If this fails</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>You see</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Log still says it will idle</td>
+<td><code>enabled</code> is still false, or the scheduler was not
+restarted after the edit. The old header at the top of the log does not
+count. Read the bottom.</td>
+</tr>
+<tr>
+<td><code>ImportError: cannot import name Phase2DirectorAgent</code></td>
+<td>Stop the scheduler with Ctrl+C. The clone does not contain the fixed
+<code>phase2_director_agent.py</code>. Do not copy it from another
+computer, and do not leave the retries running.</td>
+</tr>
+<tr>
+<td><code>EnhancedPhase1DirectorAgent' object has no attribute 'run'</code>
+repeating, then <strong>Phase I failed - stopping
+execution</strong></td>
+<td>Press Ctrl+C. The clone does not contain the fixed
+<code>phase1_director_agent_enhanced.py</code>. Stop. Do not leave it
+retrying every minute.</td>
+</tr>
+<tr>
+<td><strong>Determining NGAME Mode</strong> repeats every minute after
+<strong>NGAME execution completed successfully</strong></td>
+<td>A new picture also prints <strong>NGAME scheduler: starting
+ngame_dual_mode.py</strong>. Press Ctrl+C if that starting line is
+there. The published <code>ngame_scheduler.py</code> is older than the
+clock that only polls after a finished day. Do not leave it
+retrying.</td>
+</tr>
+<tr>
+<td>Double-click <strong>start-scheduler</strong> blinks and
+vanishes</td>
+<td>The clock did not stay up. Start it with
+<code>python ngame_scheduler.py</code> in PowerShell and leave that
+window open.</td>
+</tr>
+<tr>
+<td>The log in Notepad looks unchanged</td>
+<td>Close the tab without saving. Open <code>logs\scheduler.log</code>
+again.</td>
+</tr>
+<tr>
+<td>Streak reset after the test failure</td>
+<td>Expected. Count fourteen successes after the unaided recovery.</td>
+</tr>
+<tr>
+<td>Someone clicked a run button during the window</td>
+<td>That window does not count. Start again after the last click.</td>
+</tr>
+<tr>
+<td><code>reconnect_required</code></td>
+<td>The streak is broken. Repeat Steps 13–18 in person. Do not click a
+blind retry and count it.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Done when:</strong> One scheduled picture has finished with
+<strong>NGAME execution completed successfully</strong>, the scheduler
+is still polling, the screen is locked, and the power cord is still in.
+You are not done claiming CM. That claim waits for
+<code>gate: PASSED</code>.</p>
+<hr />
+<h2 id="step-32-what-you-say-to-the-frp">Step 32 — What you say to the
+FRP</h2>
+<p>Hand them <code>FRP_OPERATIONS_GUIDE.html</code>. Do not hand them
+this installation file.</p>
+<p>Say this, and do not add a stronger claim:</p>
+<blockquote>
+<p>The computer stays on. It takes one picture of the books each
+evening. You do not click to make that happen. If you open the page on
+this computer, the four lines under NGAME Operations are the status:
+last run, last result, scheduled successes, and next scheduled. While
+the 30 business days are still being added, last result is OK or FAIL.
+After that, last result can be LOW, MEDIUM, or HIGH. On a night the
+profile marks as off, the same page shows overall risk, the flagged
+categories, the management warning with the misappropriation type name,
+any credit-card flags, and the multi-day pattern once five nights are
+on file. We do not see every QuickBooks save. The Audit Log is still in
+QuickBooks, and you still review it there. Email and Text stay off until
+the 14-night check has passed. A quiet night sends nothing.</p>
+</blockquote>
+<p>Give them a bookmark on <strong>this PC</strong>:
+<code>http://localhost:5001/dashboard</code>.</p>
+<p>Tell them who to call: you, when the PC is dark, when QuickBooks
+needs reconnecting, or when the page will not load. MEDIUM and HIGH
+appear on that page as <strong>Last result</strong>, and again under
+<strong>Top Anomalies</strong>. They do not have to open the page every
+day.</p>
+<p><strong>Done when:</strong> They have heard that paragraph and have
+the localhost bookmark. They do not have a daily click.</p>
+<hr />
+<h2 id="step-33-leave-site-checklist">Step 33 — Leave-site
+checklist</h2>
+<p>Check these before you leave. The fourteen days may still be
+running.</p>
+<ol type="1">
+<li><label><input type="checkbox" />Sleep is Never while plugged in. You
+re-checked after a reboot.</label></li>
+<li><label><input type="checkbox" />The clone is
+<code>Documents\ngame-cm</code>. Classic <code>Documents\ngame</code>
+and NGAME-POC were not modified.</label></li>
+<li><label><input type="checkbox" /><code>quickbooks_config.json</code>
+has production tokens and <code>realm_id</code>.
+<code>ngame_cm_config.json</code> has no secrets.</label></li>
+<li><label><input type="checkbox" />Timezone and
+<code>run_hour_local</code> match the site. Both phase flags are still
+true.</label></li>
+<li><label><input type="checkbox" />After a fresh sign-in,
+<code>http://localhost:5001/dashboard</code> loads and shows the four
+lamp lines. Startup starts the dashboard and the scheduler with no
+window. Two process IDs for each script are normal.</label></li>
+<li><label><input type="checkbox" />Nothing in Task Scheduler runs
+<code>ngame_dual_mode.py</code>.</label></li>
+<li><label><input type="checkbox" />The lock test refused a second run
+(Step 29) before the clock was armed.</label></li>
+<li><label><input type="checkbox" />One live picture succeeded before
+the clock was armed (Step 30). Detector files were not
+retuned.</label></li>
+<li><label><input type="checkbox" /><code>enabled</code> is true and
+<code>dashboard_is_launcher</code> is false. If you did not arm the
+clock, <code>enabled</code> is still false and your notes say so. An
+idle scheduler is not CM.</label></li>
+<li><label><input type="checkbox" />ngrok is stopped.</label></li>
+<li><label><input type="checkbox" />The FRP heard Step 32 and received
+<code>FRP_OPERATIONS_GUIDE.html</code>. They were not told to click
+every day.</label></li>
+<li><label><input type="checkbox" />Email and Text are still off. You
+did not turn on a LAN login or an hourly schedule. Notification waits
+until <code>gate: PASSED</code>.</label></li>
+<li><label><input type="checkbox" />You will run
+<code>python ngame_soak_check.py</code> after the fourteen scheduled
+successes, and you will not claim CM until it prints
+<code>gate: PASSED</code>.</label></li>
+</ol>
+<p><strong>You may leave.</strong> The gate is not this checklist. The
+gate is the checker.</p>
+<hr />
+<h2 id="after-the-gate-notify-the-frp">After the gate — notify the
+FRP</h2>
+<p>Do this only after <code>python ngame_soak_check.py</code> has
+printed <code>gate: PASSED</code>. Do not do it during Steps 1–33.</p>
+<p>The dashboard now has a <strong>Notifications</strong> group under
+NGAME Operations. It looks like the switches on a phone. Both start
+off.</p>
+<ul>
+<li><strong>Email</strong> — the FRP turns it on and types an address,
+then clicks Save.</li>
+<li><strong>Text</strong> — the FRP turns it on and types a mobile
+number, then clicks Save.</li>
+</ul>
+<p>They may turn on one, or both. They do not edit a Python file. Saving
+these switches does not change the clock, the training matrix, or the
+anomaly math. A picture is still taken at the scheduled hour if both
+switches stay off.</p>
+<p>The engine does not use a phone number to send email.
+<strong>Save</strong> writes the two destinations into
+<code>Documents\ngame-cm\ngame_notify_settings.json</code>. That file
+holds no passwords.</p>
+<ul>
+<li><code>email_to</code> is the email address the FRP typed. After the
+night is journaled, the scheduler reads this field when Email is
+on.</li>
+<li><code>text_to</code> is the mobile number the FRP typed. The
+scheduler reads this field when Text is on.</li>
+</ul>
+<p>Neither value is stored in <code>ngame_cm_config.json</code>. The
+Twilio number the text is sent <strong>from</strong> is
+<code>twilio_from</code> in the secrets file below. The FRP does not
+type that number.</p>
+<p>A message goes out only after that night’s picture is finished, and
+only when the result is MEDIUM or HIGH, or the night failed. A quiet
+night sends nothing. A weekend skip sends nothing. A night that was
+already finished sends nothing. The four lamp lines stay on the
+dashboard either way.</p>
+<p>The mailbox password is not on this screen and not in
+<code>ngame_cm_config.json</code>. The installer writes it once, in a
+file that is never committed:</p>
+<p><code>Documents\ngame-cm\ngame_notify_secrets.json</code></p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;smtp_host&quot;</span><span class="fu">:</span> <span class="st">&quot;smtp.gmail.com&quot;</span><span class="fu">,</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;smtp_port&quot;</span><span class="fu">:</span> <span class="dv">587</span><span class="fu">,</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;smtp_user&quot;</span><span class="fu">:</span> <span class="st">&quot;the-mailbox@gmail.com&quot;</span><span class="fu">,</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;smtp_password&quot;</span><span class="fu">:</span> <span class="st">&quot;the-app-password&quot;</span><span class="fu">,</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;smtp_from&quot;</span><span class="fu">:</span> <span class="st">&quot;the-mailbox@gmail.com&quot;</span><span class="fu">,</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;twilio_account_sid&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;twilio_auth_token&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;twilio_from&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Email is the channel to finish first. Text uses a Twilio account;
+leave those three Twilio lines empty until that account exists. Leave
+<code>email_enabled</code> false inside
+<code>ngame_management_warning_agent.py</code>. That older switch is not
+the FRP’s screen.</p>
+<p>The switches appear as soon as the dashboard files are the new ones.
+A message is sent only by the scheduler that journals the night and then
+calls the notifier. The scheduler process that is already running does
+not load the new file by itself. Stop and start that process only before
+the scheduled hour, and only after the new
+<code>ngame_scheduler.py</code> and <code>ngame_notify.py</code> are in
+<code>Documents\ngame-cm</code>. Do not stop the scheduler from inside
+the dashboard window.</p>
+<p><strong>Done when:</strong> <code>gate: PASSED</code> has been
+printed, the FRP has saved Email, Text, or both, the secrets file is in
+place for each switch they turned on, and a quiet night still sends
+nothing.</p>
+<hr />
+<h2 id="after-you-leave-updating-later">After you leave — updating
+later</h2>
+<p>Not part of today’s install.</p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">&quot;</span><span class="va">$env</span><span class="op">:</span><span class="va">USERPROFILE</span><span class="st">\Documents\ngame-cm&quot;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>git pull origin main</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m pip install <span class="op">-</span>r requirements<span class="op">.</span><span class="fu">txt</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m pip install <span class="op">-</span>r ngame_ui\requirements<span class="op">.</span><span class="fu">txt</span></span></code></pre></div>
+<p>If <code>model_name</code> flipped back to <code>llama3.1:8b</code>,
+set it to the tag from <code>ollama list</code> again. Confirm
+<code>ngame_cm_config.json</code> still has this site’s hour, zone, and
+<code>enabled</code> true. Sign out and back in so the dashboard and
+scheduler reload.</p>
+<p>This PC does not <code>git push</code>.</p>
+<hr />
+<h2 id="symptom-index-stay-in-this-file">Symptom index (stay in this
+file)</h2>
+<table>
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Step</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python</code> or <code>git</code> not found</td>
+<td>3–4</td>
+</tr>
+<tr>
+<td>Wrong folder / <code>ngame</code> already exists</td>
+<td>5</td>
+</tr>
+<tr>
+<td>PowerShell blocks Activate</td>
+<td>6</td>
+</tr>
+<tr>
+<td><code>pip</code> not valid for this OS</td>
+<td>6</td>
+</tr>
+<tr>
+<td><code>redirect_uri</code> invalid / didn’t connect</td>
+<td>8, 14–17</td>
+</tr>
+<tr>
+<td>ngrok not recognized / not authenticated</td>
+<td>9–13</td>
+</tr>
+<tr>
+<td>502 before “OAuth complete”</td>
+<td>17</td>
+</tr>
+<tr>
+<td>200 then 502 after “OAuth complete”</td>
+<td>17–18 (success)</td>
+</tr>
+<tr>
+<td><code>invalid_grant</code> / <code>reconnect_required</code></td>
+<td>18, then 13–17 again</td>
+</tr>
+<tr>
+<td>Day 3 / ontology files</td>
+<td>19</td>
+</tr>
+<tr>
+<td>Ollama missing or model name mismatch</td>
+<td>20–22</td>
+</tr>
+<tr>
+<td>Dashboard will not load</td>
+<td>23–25</td>
+</tr>
+<tr>
+<td>Scheduler still says it will idle after you armed it</td>
+<td>31. Read the bottom of the log. The top is the old start.</td>
+</tr>
+<tr>
+<td><code>ImportError: cannot import name Phase2DirectorAgent</code></td>
+<td>31</td>
+</tr>
+<tr>
+<td>Double-click <strong>start-scheduler</strong> blinks and the window
+vanishes</td>
+<td>31. Use <code>python ngame_scheduler.py</code> and leave that window
+open.</td>
+</tr>
+<tr>
+<td>Second run was not refused</td>
+<td>29</td>
+</tr>
+<tr>
+<td><code>gate: NOT PASSED</code></td>
+<td>31</td>
+</tr>
+<tr>
+<td>Someone asks for every save, or for the Audit Log inside NGAME</td>
+<td>Read them the sentence at the top of <strong>What you are
+installing</strong>. Do not build it.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>NGAME-CM · Windows PC installation guide · 20 Oct 2026 · Roll-up
+for the next site’s IT · Notify only after gate: PASSED</em></p>
+</body>
+</html>

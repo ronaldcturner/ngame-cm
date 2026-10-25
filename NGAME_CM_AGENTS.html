@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NGAME-CM — Directors and agents</title>
+<style>
+@page { margin: 0.75in; }
+body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #111; max-width: 7.5in; margin: 0 auto; padding: 0.5in; }
+h1 { font-size: 20pt; border-bottom: 2px solid #2CA01C; padding-bottom: 0.25em; }
+h2 { font-size: 14pt; margin-top: 1.25em; color: #1a5c12; page-break-after: avoid; }
+h3 { font-size: 12pt; margin-top: 1em; page-break-after: avoid; }
+table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 10pt; page-break-inside: avoid; }
+th, td { border: 1px solid #ccc; padding: 0.35em 0.5em; text-align: left; vertical-align: top; }
+th { background: #f0fdf4; }
+blockquote { margin: 0.75em 0; padding: 0.5em 1em; border-left: 4px solid #2CA01C; background: #f9fafb; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; background: #f3f4f6; padding: 0.1em 0.25em; border-radius: 3px; }
+.claim { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #1a5c12; background: #f3f4f6; }
+.warn { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #b45309; background: #fffbeb; }
+.print-hint { font-size: 9pt; color: #555; border: 1px dashed #999; padding: 0.5em; margin-bottom: 1em; }
+@media print { .print-hint { display: none; } body { padding: 0; } a { color: inherit; text-decoration: none; } }
+</style>
+</head>
+<body>
+<p class="print-hint"><strong>Print / PDF:</strong> File → Print → Save as PDF. Companion to the CM roadmap. The live canvas beside chat is the working view.</p>
+
+<h1>NGAME-CM — Directors and agents</h1>
+<p><strong>Companion to</strong> NGAME_CM_ROADMAP.md · 22 Sep 2026 · Same detector as Classic</p>
+<p>Roles are <strong>not</strong> greatly expanded. The picture of the books, the CPI / z / SCPI math, and the FRP write-up are the same agents. What CM added sits <strong>outside</strong> that roster: who starts the day, the lock, the written log, and the lamp.</p>
+
+<div class="claim">
+<p>NGAME-CM is automated ongoing snapshot surveillance. It notifies the FRP of meaningfully anomalous ledger-profile events. It does not see every QuickBooks save, does not ingest Audit Log, and does not perform a formal audit.</p>
+</div>
+
+<h2>The short answer</h2>
+<table>
+<thead><tr><th>Question</th><th>Answer</th></tr></thead>
+<tbody>
+<tr><td>Are there new detector agents in CM?</td><td>No.</td></tr>
+<tr><td>Did existing agents gain new fraud logic?</td><td>No. Do not retune μ/σ or the 30-day window to ship a scheduler.</td></tr>
+<tr><td>What changed?</td><td>Who starts a run (scheduler, not the FRP click), plus lock, journal, and lamp. Those are orchestration. They are not directors or agents.</td></tr>
+<tr><td>Who sequences the daily agents in production?</td><td>The same two flow managers as Classic.</td></tr>
+</tbody>
+</table>
+<p>A <strong>director</strong> or <strong>flow manager</strong>, in this document, is a sequencer: it calls the specialized agents in order. It does not compute CPI and it does not talk to the FRP.</p>
+<p>An <strong>agent</strong>, in this document, is one owned step in that sequence (pull the books, score CPI, write a matrix column, warn management, and so on).</p>
+
+<h2>Who starts the day (CM change)</h2>
+<table>
+<thead><tr><th>Who</th><th>What it starts</th><th>Then who sequences the agents</th></tr></thead>
+<tbody>
+<tr><td>NGAME scheduler (<code>ngame_scheduler.py</code>)</td><td>Today: <code>ngame_dual_mode.py</code></td><td>Legacy directors inside dual-mode (see the wiring note below)</td></tr>
+<tr><td>Dashboard <strong>Consultant override</strong></td><td><code>run_training_flow.py</code> or <code>run_fraud_analysis.py</code></td><td>Training Flow Manager or Fraud Analysis Flow Manager</td></tr>
+<tr><td>CLI, same scripts as the dashboard</td><td>Same as the override</td><td>Same flow managers</td></tr>
+</tbody>
+</table>
+<p>The lock refuses a second start if one picture of the books is already in progress. The journal records who started it (<code>schedule</code>, <code>dashboard</code>, or <code>cli</code>).</p>
+
+<h2>Directors and flow managers</h2>
+<table>
+<thead><tr><th>Name</th><th>File</th><th>Classic role</th><th>Role in CM</th></tr></thead>
+<tbody>
+<tr><td>Training Flow Manager</td><td><code>ngame_training_flow_manager.py</code></td><td>Sequences Phase I agents for one calendar day</td><td><strong>Same sequence.</strong> Started by the dashboard override or <code>run_training_flow.py</code>.</td></tr>
+<tr><td>Fraud Analysis Flow Manager</td><td><code>ngame_fraud_analysis_flow_manager.py</code></td><td>Sequences Phase II agents for one calendar day</td><td><strong>Same sequence.</strong> Same launchers as Classic; the scheduler is supposed to be the unattended starter.</td></tr>
+<tr><td>Enhanced Phase 1 Director</td><td><code>phase1_director_agent_enhanced.py</code></td><td>Older pull-and-TTL wrapper</td><td>Still used when <code>ngame_dual_mode.py</code> runs (the scheduler’s current child). Not the dashboard’s daily path.</td></tr>
+<tr><td>Phase 2 Director</td><td><code>phase2_director_agent.py</code></td><td>Older CPI/report wrapper</td><td>Same: dual-mode only. Not the dashboard’s daily path.</td></tr>
+<tr><td>Dual Mode</td><td><code>ngame_dual_mode.py</code></td><td>Chooses training vs fraud from matrix day count</td><td><strong>Same switch.</strong> Scheduler reuses it. Its own tails are a shorter stack than the flow managers.</td></tr>
+</tbody>
+</table>
+
+<h2>Phase I agents — training (same as Classic)</h2>
+<table>
+<thead><tr><th>Agent</th><th>File</th><th>One-line function</th><th>Role in CM</th></tr></thead>
+<tbody>
+<tr><td>Data Extraction Agent</td><td><code>ngame_data_extraction_agent.py</code></td><td>Read-only pull; writes <code>Yesterday.ttl</code> / <code>Today.ttl</code></td><td><strong>Same.</strong> Unattended OAuth is an orchestration rule around this pull, not a new agent.</td></tr>
+<tr><td>CPI Analysis Agent</td><td><code>ngame_cpi_analysis_agent.py</code></td><td>Yesterday vs today → today’s CPI array</td><td><strong>Same.</strong></td></tr>
+<tr><td>Matrix Management Agent</td><td><code>ngame_matrix_management_agent.py</code></td><td>Appends today’s CPI; refreshes μ and σ</td><td><strong>Same.</strong> At most one new column per calendar date.</td></tr>
+</tbody>
+</table>
+
+<h2>Phase II agents — monitoring (same as Classic)</h2>
+<table>
+<thead><tr><th>Agent</th><th>File</th><th>One-line function</th><th>Role in CM</th></tr></thead>
+<tbody>
+<tr><td>Data Extraction Agent</td><td><code>ngame_data_extraction_agent.py</code></td><td>Same live pull and TTL rotation</td><td><strong>Same.</strong></td></tr>
+<tr><td>CPI Analysis Agent</td><td><code>ngame_cpi_analysis_agent.py</code></td><td>Today’s CPI (and wCPI) profile</td><td><strong>Same.</strong></td></tr>
+<tr><td>Credit Card Watch Agent</td><td><code>ngame_credit_card_watch_agent.py</code></td><td>Rule scan of credit-card charges in <code>Today.ttl</code></td><td><strong>Same.</strong></td></tr>
+<tr><td>Churn Comparison Agent</td><td><code>ngame_churn_comparison_agent.py</code></td><td>z-scores vs μ / σ; HIGH / MEDIUM / LOW</td><td><strong>Same.</strong></td></tr>
+<tr><td>Sequence CPI Agent</td><td><code>ngame_sequence_cpi_agent.py</code></td><td>SCPI over the last L days</td><td><strong>Same.</strong></td></tr>
+<tr><td>Anomaly Identification Agent</td><td><code>ngame_anomaly_identification_agent.py</code></td><td>Picks top ranked dimensions to escalate</td><td><strong>Same.</strong></td></tr>
+<tr><td>Account Mapping Agent</td><td><code>ngame_account_mapping_agent.py</code></td><td>Maps dimensions to accounts in <code>Today.ttl</code></td><td><strong>Same.</strong></td></tr>
+<tr><td>LLM Analysis Agent</td><td><code>ngame_llm_analysis_agent.py</code></td><td>Narrative vs asset-misappropriation taxonomy (Ollama)</td><td><strong>Same.</strong> Scheduler journals <code>ollama_unavailable</code> rather than inventing a fake check.</td></tr>
+<tr><td>Management Warning Agent</td><td><code>ngame_management_warning_agent.py</code></td><td>FRP write-up; optional email</td><td><strong>Same write-up.</strong> Lamp reads the journal; email-on-MEDIUM/HIGH/FAIL is Step 7.</td></tr>
+</tbody>
+</table>
+
+<h2>Validation agent (same as Classic; not daily CM)</h2>
+<table>
+<thead><tr><th>Agent</th><th>File</th><th>One-line function</th><th>Role in CM</th></tr></thead>
+<tbody>
+<tr><td>Anomaly Injection Agent</td><td><code>ngame_anomaly_injection_agent.py</code></td><td>One-shot synthetic spike in <code>Today.ttl</code> after the live pull — does not write to QuickBooks</td><td><strong>Same.</strong> Consultant/CLI test, not the soak and not the FRP daily path.</td></tr>
+</tbody>
+</table>
+
+<h2>Not directors or agents (CM orchestration)</h2>
+<table>
+<thead><tr><th>Name</th><th>File</th><th>Job</th></tr></thead>
+<tbody>
+<tr><td>CM config</td><td><code>ngame_cm_config.json</code> / <code>ngame_cm_config.py</code></td><td>On/off, timezone, run hour, weekday rule. No secrets.</td></tr>
+<tr><td>Lock</td><td><code>ngame_run_lock.py</code></td><td>One picture of the books at a time.</td></tr>
+<tr><td>Pipeline guard</td><td><code>ngame_pipeline_guard.py</code></td><td>CLI refuses if the lock is held.</td></tr>
+<tr><td>Journal / lamp numbers</td><td><code>ngame_run_journal.py</code></td><td>Written log of each attempt; four lamp fields.</td></tr>
+<tr><td>Scheduler</td><td><code>ngame_scheduler.py</code></td><td>Clock. May start one run at the scheduled hour. Not cron.</td></tr>
+<tr><td>Soak checker</td><td><code>ngame_soak_check.py</code></td><td>Scores the journal against the 14-day soak. Does not start a run.</td></tr>
+<tr><td>Dashboard lamp</td><td><code>ngame_ui/app-simple.py</code> + dashboard template</td><td>Status light. Consultant override still starts a flow-manager run.</td></tr>
+</tbody>
+</table>
+
+<h2>Wiring note — two stacks</h2>
+<div class="warn">
+<p>Today the scheduler and the dashboard do <strong>not</strong> start the same child process.</p>
+</div>
+<table>
+<thead><tr><th>Starter</th><th>Child</th><th>Agent stack</th></tr></thead>
+<tbody>
+<tr><td>Scheduler</td><td><code>ngame_dual_mode.py</code></td><td>Enhanced Phase 1 Director + Phase 2 Director + dual-mode’s own shorter tails</td></tr>
+<tr><td>Dashboard override / training and fraud launchers</td><td>Flow managers</td><td>Full Phase I or Phase II agent tables above</td></tr>
+</tbody>
+</table>
+<p>Until the scheduler starts the same scripts the dashboard uses, “CM uses the same agents” is true for the override path and only partly true for the clock path.</p>
+
+<h2>What to tell a customer</h2>
+<blockquote>The same specialists still take the picture of the books and score it. Continuous monitoring did not add a new fraud brain. What we added is a clock, a one-at-a-time rule, a written log, and a status light, so the FRP does not have to click every day.</blockquote>
+</body>
+</html>

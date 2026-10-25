@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NGAME-CM — Development Roadmap</title>
+<style>
+@page { margin: 0.75in; }
+body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #111; max-width: 7.5in; margin: 0 auto; padding: 0.5in; }
+h1 { font-size: 20pt; border-bottom: 2px solid #2CA01C; padding-bottom: 0.25em; }
+h2 { font-size: 14pt; margin-top: 1.25em; color: #1a5c12; page-break-after: avoid; }
+h3 { font-size: 12pt; margin-top: 1em; page-break-after: avoid; }
+table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 10pt; page-break-inside: avoid; }
+th, td { border: 1px solid #ccc; padding: 0.35em 0.5em; text-align: left; vertical-align: top; }
+th { background: #f0fdf4; }
+blockquote { margin: 0.75em 0; padding: 0.5em 1em; border-left: 4px solid #2CA01C; background: #f9fafb; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; background: #f3f4f6; padding: 0.1em 0.25em; border-radius: 3px; }
+.claim { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #1a5c12; background: #f3f4f6; }
+.warn { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #b45309; background: #fffbeb; }
+.danger { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #b91c1c; background: #fef2f2; }
+.flow { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9.5pt; background: #f3f4f6; padding: 0.6em 0.8em; }
+.print-hint { font-size: 9pt; color: #555; border: 1px dashed #999; padding: 0.5em; margin-bottom: 1em; }
+@media print { .print-hint { display: none; } body { padding: 0; } a { color: inherit; text-decoration: none; } }
+</style>
+</head>
+<body>
+<p class="print-hint"><strong>Print / PDF:</strong> File → Print → Save as PDF. This is the storable copy of the kickoff roadmap. The live canvas beside chat remains the working checklist.</p>
+
+<h1>NGAME-CM — Development Roadmap</h1>
+<p><strong>Kickoff</strong> · 16 Sep 2026 · Decision state from NGAME-CM / appliance chats · WCARS 75 skipped</p>
+<p>Continuous monitoring engine on a dedicated always-on host. Detector stays. Operations change. Claim matches what is running.</p>
+
+<table>
+<thead><tr><th>Job of NGAME-CM</th><th>What it does not claim</th><th>v1 cadence (honest CM)</th><th>Detector in v1</th></tr></thead>
+<tbody><tr><td>Notify</td><td>Not audit</td><td>1 / day</td><td>Same CPI</td></tr></tbody>
+</table>
+
+<h2>Product sentence (do not exceed this)</h2>
+<div class="claim">
+<p>NGAME-CM is automated ongoing snapshot surveillance. It notifies the FRP of meaningfully anomalous ledger-profile events. It does not see every QuickBooks save, does not ingest Audit Log, and does not perform a formal audit.</p>
+</div>
+<div class="warn">
+<p>Do not wait for zero-caveat wiretap CM. Intuit does not offer an Audit Log event feed. The OS cannot see accounting events. Webhooks and CDC mean “this object changed,” not a forensic event log. The shippable ceiling is unattended, higher-cadence snapshots on a dedicated always-on host. The qualification is the product.</p>
+</div>
+<p>Zero-caveat wiretap is a nickname for a product that does not exist — and that this roadmap says we must not wait for, and must not claim.</p>
+<p>Wiretap here is a metaphor, not a legal term. It means: NGAME is on the line with QuickBooks and hears every posting as it happens — who changed what, the instant it is saved, with nothing happening off-camera.</p>
+<p>Zero-caveat means you can say that with no footnote. No “we sample once a day.” No “we do not see every save.” No “Audit Log stays in QuickBooks.” No “something could be posted and reversed between samples.”</p>
+<p>Put together: a live, complete, no-gaps feed of every QuickBooks action, sold with no qualifications.</p>
+<p>That is why the next sentences in the <code>.md</code> exist. Intuit does not give us an Audit Log firehose. The Mac or PC cannot see bookkeeping events. So the honest product is: unattended snapshots on a schedule, on a machine that stays on, plus notice when the ledger profile looks anomalous. The caveats are the product.</p>
+<p>To a customer: “We do not wiretap QuickBooks. We take a scheduled picture of the books, compare it to the learned profile, and notify you if that picture looks meaningfully off. We do not see every save, and we do not replace the QuickBooks Audit Log.”</p>
+
+<h2>Names — keep them distinct</h2>
+<table>
+<thead><tr><th>String</th><th>What it is</th><th>What it is not</th></tr></thead>
+<tbody>
+<tr><td>Classic NGAME</td><td>Current product: FRP clicks once per business day; dashboard is the launcher</td><td>Not continuous monitoring</td></tr>
+<tr><td>NGAME-CM</td><td>Capability: unattended snapshot surveillance + notify-on-anomaly</td><td>Not a formal audit engine; not every QBO save</td></tr>
+<tr><td>NGAME-Appliance</td><td>The always-on host that makes CM operationally true</td><td>Not a new detector; not required before first software steps</td></tr>
+<tr><td>Monitoring</td><td>Notify the FRP of meaningfully anomalous events</td><td>Not “auditing,” CA/CM literature shorthand, or Audit Log replacement</td></tr>
+</tbody>
+</table>
+
+<h2>Says vs does not say</h2>
+<h3>Claim — honest CM sentence</h3>
+<p>Automated ongoing snapshot surveillance on a dedicated host. Scheduled pulls. No daily click. Alerts when risk is MEDIUM or HIGH, and when a scheduled run fails. Weeks of logs show it ran without the FRP.</p>
+<p>Audit Log remains in the QuickBooks Online UI. NGAME still does not ingest it.</p>
+<h3>Forbidden — do not say until architecture exists</h3>
+<p>Real-time. Every save. Wiretap. Continuous auditing. Nothing can be posted and erased between samples. NGAME reads who changed what. Replacement for QBO Audit Log.</p>
+<p>A webhook, in this context, is a tap on the shoulder from Intuit: “a record changed — go look.” Later we may use that tap only to wake NGAME to take another snapshot. It is not a story of the change (who, what, old value), and it is not the QuickBooks Audit Log.</p>
+<p>Forbidden to say, even after webhooks exist: that webhooks are a forensic event log; that they let NGAME see every save or who changed what; that webhooks are the v1 product or the proof that CM is “true.”</p>
+<p>v1 is this: a dedicated machine takes the daily picture of the books by itself, at the scheduled hour, with no FRP click. That definition does not change if webhooks arrive later.</p>
+<p>A gate, in this document, is a pass/fail checkpoint you must clear before you may claim a step (or v1) is done.</p>
+<p>A soak, in this document, is a long proving run with no babysitting: the dedicated machine stays on (it does not sleep), the daily picture of the books is taken by itself at the scheduled hour, nobody clicks the FRP button, and a written log shows that this succeeded for fourteen scheduled days in a row. That log is the proof. A soak is not a coding task and not a short demo on a laptop that sleeps.</p>
+<p>The checkpoint that v1 is done is that 14-day soak plus the honest product sentence — not the arrival of webhooks. Do not wait for webhooks to declare v1 complete, and do not tell a customer that webhooks are what made CM real.</p>
+
+<h2>What stays vs what moves</h2>
+<p><strong>Classic NGAME — human-triggered daily sampler</strong></p>
+<p class="flow">FRP click → QBO snapshot → CPI / z / SCPI → Result files → FRP reads screen</p>
+<p><strong>NGAME-CM v1 — unattended daily sampler (same detector)</strong></p>
+<p class="flow">Clock → Scheduler + lock → QBO snapshot → CPI / z / SCPI → Journal + files → Lamp + (later) alert</p>
+<p>A lock, in this document, is a one-at-a-time rule: only one picture of the books may be in progress. If the scheduler is already pulling QuickBooks, a dashboard click or a second command must be refused. Without the lock, two pulls can run together and scramble the same day’s results. It is not a door lock and not encryption.</p>
+<p>A lamp, in this document, is the dashboard used as a status light, not as the start button. The FRP reads last run, last result, how many scheduled days succeeded in a row, and when the next run is due. They do not click to make the daily picture happen. Email (later) may also notify; the lamp is what you see if you open the screen.</p>
+<p>Source: current pipeline (<code>ngame_dual_mode.py</code>, dashboard subprocess launchers) vs planned CM orchestration. Detector boxes are the same code path.</p>
+<table>
+<thead><tr><th>Layer</th><th>Classic (today)</th><th>NGAME-CM v1</th></tr></thead>
+<tbody>
+<tr><td>Detector</td><td>QBO full pull → TTL → CPI / z / SCPI → warnings</td><td>Unchanged. Do not retune μ/σ or day semantics to ship a scheduler.</td></tr>
+<tr><td>Who starts a run</td><td>FRP green button (<code>app-simple.py</code> subprocess)</td><td>Scheduler. Button becomes consultant override.</td></tr>
+<tr><td>Host</td><td>Surveillance PC; dashboard auto-starts at login; PC may sleep</td><td>Dedicated always-on box; sleep disabled; services at boot</td></tr>
+<tr><td>Locking</td><td>In-memory Flask (web framework written in Python) lock only — CLI + dashboard can double-run</td><td>Cross-process file lock covering UI and scheduler</td></tr>
+<tr><td>Evidence it ran</td><td>FRP memory + matrix column / fraud JSON</td><td>Append-only run journal + last-run lamp</td></tr>
+<tr><td>Notify</td><td>FRP must open the local dashboard</td><td>Dashboard as lamp, then email (SMS later) on MEDIUM/HIGH and on miss</td></tr>
+<tr><td>Audit Log</td><td>FRP protocol in QBO UI (attribution unreliable — internal only)</td><td>Same. Not ingested.</td></tr>
+</tbody>
+</table>
+<p>A cron, in this document, is the computer’s own built-in alarm clock (macOS and Linux). You give it a silent list of times and a command to run. Windows calls the same idea Task Scheduler. Cron only starts a program; it does not take the picture of the books, keep the lock, or write the journal. It is not the NGAME scheduler (<code>ngame_scheduler.py</code>).</p>
+<blockquote>The Implementation Guide already has an unattended hook (<code>ngame_dual_mode.py</code> + cron / Task Scheduler) and then forbids it on dashboard sites because it can double-run the pipeline. CM productizes that path and makes it the default. Do not turn on OS cron against Classic until the file lock exists. (Lock shipped in first-steps 2, 17 Sep 2026.)</blockquote>
+
+<h2>High-level roadmap</h2>
+<p>v1 is Tier A from the appliance effort estimate: always-on periodic watchdog, not event-driven ingestion. Rough productization remains about 5–10 person-months for a small team. Hardware is phase 3, not phase 1. First engineering is orchestration on a never-sleep host.</p>
+<table>
+<thead><tr><th>Phase</th><th>Outcome</th><th>Gate to next</th><th>Not in this phase</th></tr></thead>
+<tbody>
+<tr><td>0 · Claim freeze</td><td>This document / canvas. Monitoring not auditing. WCARS 75 skipped.</td><td>Language agreed; no code yet</td><td>Marketing copy beyond the product sentence</td></tr>
+<tr><td>1 · Unattended sampler</td><td>One scheduled successful snapshot per calendar day; lock; journal; dashboard lamp</td><td>14 consecutive scheduled successes, no FRP click</td><td>Hardware SKU, email, LAN auth, hourly cadence</td></tr>
+<tr><td>2 · Notify</td><td>Push on MEDIUM/HIGH and on failed/missed run; FRP guide rewritten as exception response</td><td>Supervised alert test at a friendly site</td><td>SMS required; cloud portal</td></tr>
+<tr><td>3 · Appliance</td><td>Dedicated box, boot services (dashboard + Ollama + scheduler), sleep off, LAN URL + auth</td><td>Weeks of journal on that box, not a laptop</td><td>Hourly sampling; webhooks</td></tr>
+<tr><td>4 · Denser cadence</td><td>Phase II every N hours (6–12). Training still one column per calendar day.</td><td>API-quota and same-day semantics documented</td><td>Calling it real-time</td></tr>
+<tr><td>5 · Optional later</td><td>Webhook as wake-up to run a snapshot; property-mutation signal from v1.1 backlog</td><td>Only if v1 is in the field</td><td>Audit Log API; “who changed what”; zero-caveat CM</td></tr>
+<tr><td>6 · Field + WCARS</td><td>JFAR in print + appliance running + one precise sentence</td><td>Re-enter a later WCARS only then</td><td>WCARS 75 (6–7 Nov 2026)</td></tr>
+</tbody>
+</table>
+
+<h3>Cadence rules that protect the published method</h3>
+<table>
+<thead><tr><th>Mode</th><th>When the scheduler fires</th><th>What it writes</th></tr></thead>
+<tbody>
+<tr><td>Phase I training</td><td>Default: business days only, one hour you choose</td><td>At most one training-matrix column per calendar date. Quiet weekends stay out of μ/σ.</td></tr>
+<tr><td>Phase II monitoring</td><td>Every calendar day including weekends (v1). Denser in phase 4.</td><td>Fraud JSON + journal. Never a new training column.</td></tr>
+<tr><td>Already succeeded today</td><td>Scheduler no-ops</td><td>Journal note: skipped, already ran. Consultant override still allowed behind the lock.</td></tr>
+<tr><td>Run failed</td><td>Do not count it as a training day</td><td>Journal FAIL. Later: push alert. FRP is not asked to click-retry blindly.</td></tr>
+</tbody>
+</table>
+<p>Weekend sampling is the reason Classic hid a hole (FRP PC off). Put it in Phase II, not in the 30-day baseline, or you change the JFAR-evaluated training design.</p>
+
+<h2>First steps — detailed instruction</h2>
+<p>Do not buy hardware yet. Do not add webhooks. Do not retune CPI. The first shippable increment is an unattended daily sampler with proof it ran. Use any never-sleep machine you already control (lab mini PC or a Mac/PC set to never sleep). That host is a stand-in for the appliance.</p>
+<div class="danger">
+<p><strong>Stop condition:</strong> if a step would change extraction, Jaccard/CPI, z-score thresholds, or training-window length, it is out of scope for first steps. Park it on the v1.1 backlog.</p>
+</div>
+
+<h3>Step 0 — Freeze language (this kickoff) — done</h3>
+<p>Treat the product sentence at the top of this document as the claims guide. Future chats, IG copy, and FRP copy must not exceed it. Optional follow-on: a Cursor rule so a new chat cannot “helpfully” call Classic NGAME continuous monitoring.</p>
+
+<h3>Step 1 — Config surface (no scheduler yet) — done (17 Sep 2026)</h3>
+<p>Add a small JSON file at repo root, for example <code>ngame_cm_config.json</code>, read only by new code. Keep secrets out of it.</p>
+<table>
+<thead><tr><th>Field</th><th>v1 value</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>enabled</td><td>false until soak starts</td><td>Classic sites must not flip by accident</td></tr>
+<tr><td>timezone</td><td>org local tz</td><td>“Today” is calendar date in that zone</td></tr>
+<tr><td>run_hour_local</td><td>integer 0–23, consultant-chosen</td><td>After typical bookkeeper posting</td></tr>
+<tr><td>phase1_weekdays_only</td><td>true</td><td>Protect 30-day μ/σ</td></tr>
+<tr><td>phase2_every_calendar_day</td><td>true</td><td>Catch weekend/after-hours posts</td></tr>
+<tr><td>dashboard_is_launcher</td><td>true until lamp ships</td><td>Cut over in step 5, not step 1</td></tr>
+</tbody>
+</table>
+<p>Shipped: <code>ngame_cm_config.json</code> + <code>ngame_cm_config.py</code>. Default timezone <code>America/Los_Angeles</code>, <code>run_hour_local</code> 18, <code>enabled</code> false.</p>
+
+<h3>Step 2 — Cross-process run lock — done (17 Sep 2026)</h3>
+<p>Today <code>app-simple.py</code> holds an in-memory <code>threading.Lock</code>. That does not serialize a cron job against the dashboard. Implement <code>ngame_run_lock.py</code> using a lock file under <code>logs/ngame_pipeline.lock</code> (POSIX <code>fcntl</code> / Windows <code>msvcrt</code> or an equivalent exclusive open). Acquire in:</p>
+<table>
+<thead><tr><th>Caller</th><th>File today</th><th>Change</th></tr></thead>
+<tbody>
+<tr><td>Dashboard training / fraud / dual-mode subprocess</td><td><code>ngame_ui/app-simple.py</code> (around the operation lock + Popen)</td><td>Acquire file lock before Popen; release when the child exits</td></tr>
+<tr><td>CLI dual mode</td><td><code>ngame_dual_mode.py</code> / <code>run_training_flow.py</code> / <code>run_fraud_analysis.py</code></td><td>Same lock. If busy, exit 2 with a clear message; do not start a second pull</td></tr>
+<tr><td>New scheduler</td><td>does not exist yet</td><td>Acquire, run, release. Never bypass.</td></tr>
+</tbody>
+</table>
+<p>Prove this on one machine: start a dashboard run, then invoke the CLI. CLI must refuse. Reverse the order. Dashboard must show “already running.”</p>
+<p>Shipped: <code>ngame_run_lock.py</code>, <code>ngame_pipeline_guard.py</code>, wired into dashboard and CLI launchers.</p>
+
+<h3>Step 3 — Run journal — done (17 Sep 2026)</h3>
+<p>Two files, both gitignored if they contain site paths; schema is part of the product:</p>
+<table>
+<thead><tr><th>File</th><th>Shape</th><th>Who reads it</th></tr></thead>
+<tbody>
+<tr><td><code>logs/ngame_runs.jsonl</code></td><td>One JSON object per attempt: utc_ts, local_date, phase, trigger (schedule|dashboard|cli), ok, exit_code, skipped_reason, matrix_days, risk</td><td>Consultant, soak evidence, later WCARS “it ran without you”</td></tr>
+<tr><td><code>logs/ngame_last_run.json</code></td><td>Latest record plus next_scheduled_local</td><td>Dashboard lamp; health check</td></tr>
+</tbody>
+</table>
+<p>Write the journal from a single helper, <code>ngame_run_journal.py</code>, called after every attempt including skips and lock-busy. A skipped “already ran today” is success for uptime evidence, not a training day. A lock-busy from an overlapping dashboard click is not a missed schedule.</p>
+<p>Shipped: <code>ngame_run_journal.py</code>. <code>logs/</code> is gitignored.</p>
+
+<h3>Step 4 — Scheduler wrapping dual mode — done (17 Sep 2026)</h3>
+<p>New entry point <code>ngame_scheduler.py</code>. It is a long-running process or a once-per-minute poller started at login/boot — not an undocumented crontab on the FRP machine. Behavior:</p>
+<table>
+<thead><tr><th>Check</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>enabled is false</td><td>Sleep; do nothing</td></tr>
+<tr><td>Wrong weekday in Phase I</td><td>No-op; optional journal skip</td></tr>
+<tr><td>last_run.local_date is today and ok</td><td>Skip; journal skipped_reason=already_ran</td></tr>
+<tr><td>Otherwise</td><td>Lock → ngame_dual_mode (or the existing training/fraud launcher) → journal</td></tr>
+<tr><td>OAuth invalid_grant</td><td>FAIL journal reconnect_required. Do not open a browser unattended.</td></tr>
+<tr><td>Phase II and Ollama down</td><td>FAIL journal ollama_unavailable. Do not pretend the fraud check ran.</td></tr>
+</tbody>
+</table>
+<p>Reuse <code>NGameDualMode.determine_mode()</code>. Do not invent a second phase switch. Tee stdout to <code>logs/ngame_daily.log</code> the way the IG cron example already sketches, so a bad TTL build is still reconstructable.</p>
+<blockquote>macOS LaunchAgent / Windows service for the scheduler can wait until the soak host is chosen. For the first lab prove, a Terminal-kept process or a developer LaunchAgent on your machine is enough. Product installers come in phase 3.</blockquote>
+<p>Shipped: <code>ngame_scheduler.py</code>. <code>enabled</code> stays false, so a running scheduler <strong>idles</strong> (no QuickBooks pull). Lab: <code>python3 ngame_scheduler.py</code> (leave the Terminal open) or <code>python3 ngame_scheduler.py --once</code>. Unattended runs set <code>NGAME_UNATTENDED=1</code> so a dead refresh token is journaled as <code>reconnect_required</code> instead of opening a browser. Dual-mode stdout is appended to <code>logs/ngame_daily.log</code> when a pull actually happens.</p>
+
+<h3>Step 5 — Dashboard becomes a lamp — done (19 Sep 2026)</h3>
+<p>After the journal exists, the FRP view should answer four questions without a click: last run time, last result (LOW/MEDIUM/HIGH or FAIL), consecutive successful scheduled days, next scheduled time. Keep the green button as a labeled <strong>consultant override</strong> until Classic sites are migrated; hide it from FRP mode once <code>dashboard_is_launcher</code> is false.</p>
+<p>The dashboard already polls <code>/api/consolidated-dashboard</code>. Add last-run fields there from <code>ngame_last_run.json</code>. Do not require the FRP to watch live TTL output on a scheduled run. Live output stays for consultant diagnosis.</p>
+<p>Shipped: <code>cm_lamp</code> on <code>/api/consolidated-dashboard</code>. FRP operations panel shows last run, last result, scheduled-success streak, and next scheduled. The green button is labeled <strong>Consultant override</strong> while <code>dashboard_is_launcher</code> is true. Set that flag false to hide it in FRP mode. <code>enabled</code> is still false — the lamp shows dashes until a journal exists.</p>
+
+<h3>Step 6 — Fourteen-day soak (software gate) — tooling ready (19 Sep 2026); gate pending</h3>
+<p>Pick a never-sleep host with a working Track A or Track B company. Enable the scheduler. Do not click the FRP button. Pass only if:</p>
+<table>
+<thead><tr><th>Evidence</th><th>Pass rule</th></tr></thead>
+<tbody>
+<tr><td>Journal</td><td>14 consecutive scheduled successes on the intended calendar rule</td></tr>
+<tr><td>Matrix / fraud JSON</td><td>Phase I: at most one new column per date. Phase II: fraud file updates, matrix day count unchanged</td></tr>
+<tr><td>Lock test</td><td>Manual overlap still refused</td></tr>
+<tr><td>Failure injection</td><td>Kill Ollama or pull the network once; journal records FAIL; next day recovers without a click</td></tr>
+<tr><td>Human</td><td>You can show a 14-day log that you did not babysit</td></tr>
+</tbody>
+</table>
+<p>This step cannot be completed in a coding session. The 14-day clock is calendar evidence on a never-sleep host.</p>
+<p>Shipped: <code>ngame_soak_check.py</code>. It reads <code>logs/ngame_runs.jsonl</code> and scores the five rules above. Exit 0 only when all five are evidenced. It does <strong>not</strong> start the soak and does <strong>not</strong> flip <code>enabled</code>. Lab run today: checker reports <strong>NOT PASSED</strong> (no journal yet; <code>enabled</code> is still false).</p>
+<p>How to run the soak, when a host is chosen:</p>
+<ol>
+<li>Never-sleep machine, working Track A or Track B company.</li>
+<li>Set <code>"enabled": true</code> in <code>ngame_cm_config.json</code>.</li>
+<li><code>python3 ngame_scheduler.py</code> and leave it running.</li>
+<li>Do not click the FRP button. The dashboard is a lamp.</li>
+<li>Once during the window: start a dashboard or CLI run while the scheduler holds the lock — it must refuse (<code>lock_busy</code>).</li>
+<li>Once during the window: stop Ollama or unplug the network; the journal must record FAIL; the next scheduled day must recover without a click.</li>
+<li>After 14 consecutive scheduled successes: <code>python3 ngame_soak_check.py</code>. Mark this step completed only when that command prints <code>gate: PASSED</code>.</li>
+</ol>
+
+<h3>Step 7 — Only after soak — pending</h3>
+<p>Then, and not as a bundle with steps 2–5: (a) email on MEDIUM/HIGH and FAIL, (b) hardware SKU + UPS + sleep policy, (c) bind already is <code>0.0.0.0:5001</code> so add dashboard auth before treating LAN as a feature, (d) FRP_OPERATIONS_GUIDE rewritten from “click daily” to “respond to notices; Audit Log still in QBO,” (e) IG split Classic vs Appliance. Hourly cadence is still later.</p>
+
+<h3>First-steps checklist</h3>
+<table>
+<thead><tr><th>Step</th><th>Item</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>Freeze claim language (this document)</td><td>completed</td></tr>
+<tr><td>1</td><td><code>ngame_cm_config.json</code> (enabled=false)</td><td>completed</td></tr>
+<tr><td>2</td><td>Cross-process file lock on dashboard + CLI</td><td>completed</td></tr>
+<tr><td>3</td><td>Run journal + last-run JSON</td><td>completed</td></tr>
+<tr><td>4</td><td><code>ngame_scheduler.py</code> wrapping dual_mode</td><td>completed</td></tr>
+<tr><td>5</td><td>Dashboard last-run lamp; button → override</td><td>completed</td></tr>
+<tr><td>6</td><td>14-day unattended soak</td><td>tooling ready — gate pending</td></tr>
+<tr><td>7</td><td>Alerts, appliance hardware, LAN auth, docs split</td><td>pending</td></tr>
+</tbody>
+</table>
+
+<h2>Out of scope until v1 is running</h2>
+<h3>Do not start</h3>
+<ul>
+<li>QBO Audit Log ingestion (no API; stay hidden from Intuit).</li>
+<li>Webhook/CDC as the CM architecture.</li>
+<li>Changing z thresholds or the 30-day window to “make it more continuous.”</li>
+<li>WCARS 75 (6–7 November 2026).</li>
+<li>Claim-language edits to JFAR, IG, or FRP guide ahead of a running appliance — except internal planning docs.</li>
+</ul>
+<h3>Parked on other backlogs</h3>
+<ul>
+<li>wCPI and property mutations (v1.1 detection, not CM ops).</li>
+<li>Premium lookback L dropdown.</li>
+<li>Cloud license portal.</li>
+<li>User-attribution in NGAME output (C1) — still Audit Log in QBO.</li>
+</ul>
+
+<h2>WCARS re-entry gate</h2>
+<p>Skip the 75th symposium. Re-enter a later WCARS only after all three:</p>
+<table>
+<thead><tr><th>#</th><th>Condition</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>JFAR article is in print</td><td>Cite the published method; talk about what came after. No exclusivity hedge.</td></tr>
+<tr><td>2</td><td>NGAME-Appliance in the field: always-on, scheduled, no daily click, alerts, weeks of logs</td><td>“Not to be released later.” The qualification is the running product.</td></tr>
+<tr><td>3</td><td>One precise sentence: automated ongoing snapshot surveillance; not every QBO save; Audit Log still in the QBO UI</td><td>Do not make the gate “true CM with nothing left to explain.”</td></tr>
+</tbody>
+</table>
+
+<p>Related: sequence architecture canvas · nonprofit deployment canvas · v1.1 backlog · FRP_OPERATIONS_GUIDE.md (Classic daily click) · README.md optional CLI/cron (forbidden alongside dashboard until lock)</p>
+</body>
+</html>

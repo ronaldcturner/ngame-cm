@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From Classic NGAME to NGAME-CM</title>
+<style>
+@page { margin: 0.75in; }
+body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #111; max-width: 7.5in; margin: 0 auto; padding: 0.5in; }
+h1 { font-size: 20pt; border-bottom: 2px solid #1e3a5f; padding-bottom: 0.25em; }
+h2 { font-size: 14pt; margin-top: 1.25em; color: #1e3a5f; page-break-after: avoid; }
+table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 10pt; page-break-inside: avoid; }
+th, td { border: 1px solid #ccc; padding: 0.35em 0.5em; text-align: left; vertical-align: top; }
+th { background: #eef3f8; }
+.lead { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #1e3a5f; background: #f3f4f6; font-size: 12pt; }
+.print-hint { font-size: 9pt; color: #555; border: 1px dashed #999; padding: 0.5em; margin-bottom: 1em; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; background: #f3f4f6; padding: 0.1em 0.25em; border-radius: 3px; }
+@media print { .print-hint { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+<p class="print-hint"><strong>For the partnering test site.</strong> Print / PDF: File → Print → Save as PDF. The install steps are in the Windows guide.</p>
+<h1>From Classic NGAME to NGAME-CM</h1>
+<p><strong>For the partnering test site</strong> · 20 Oct 2026 · Read this first. The steps are in <code>NGAME_CM_INSTALLATION_GUIDE_PC.html</code>.</p>
+<p class="lead">NGAME-CM is an autonomous watchdog. It stays on. It takes the picture of the books by itself. Nobody presses a button to make that happen.</p>
+
+<h2>What Classic required</h2>
+<p>Classic NGAME used the same way of reading the books. A person opened a page on a work computer and pressed a button once each business day. If that person was away, or the computer was asleep, that day was missed. The bookkeeper’s own PC was doing two jobs: QuickBooks, and the daily NGAME click.</p>
+
+<h2>What NGAME-CM does instead</h2>
+<p>The click is gone. A small computer, used for this purpose only, takes one picture of the QuickBooks Online ledger each evening, at an hour chosen for the site. A usual hour is 6:00 PM, after the day’s posting is done.</p>
+<p>That picture is compared with the organization’s own profile. If the picture is meaningfully off, the result is MEDIUM or HIGH. If the night fails, the result is FAIL. A quiet night is simply quiet.</p>
+<p>The page on that computer is a status light, not a start button. It shows four lines: last run, last result, how many scheduled nights have succeeded in a row, and the next scheduled time. Opening the page does not start a picture. On a night the profile marks as off, that same page shows the warning colors: overall risk, the flagged categories, the management warnings written after the misappropriation taxonomy is given to the local model, any credit-card watch flags, and the multi-day pattern once five nights are on file.</p>
+
+<h2>The surveillance machine</h2>
+<p>This job needs a computer that can be left on. Sleep must be set to Never. The power cord stays in. The machine stays signed in. A monitor may go dark. That is fine. Pulling the power cord stops the watchdog until someone signs in again. The records already written stay on the disk.</p>
+<p>A suitable machine is a small, inexpensive mini PC. The first host is a GEEKOM A5, with 16 GB of memory and a 1 TB drive. The brand is an example, not a requirement. What matters is: Windows 10 or 11, always powered, never sleeping, on the network at the scheduled hour, and not the bookkeeper’s everyday computer.</p>
+<p>No NGAME software is installed on the bookkeeper’s PC. The bookkeeper keeps using QuickBooks Online in a browser. The watchdog reads that same cloud ledger, once each evening, through a read-only connection.</p>
+
+<h2>Who does what</h2>
+<table>
+<thead><tr><th>Person</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td>Site IT</td><td>Installs NGAME-CM once, from the Windows guide. Leaves the mini on.</td></tr>
+<tr><td>Bookkeeper</td><td>Uses QuickBooks Online, as before. Does not run NGAME.</td></tr>
+<tr><td>Financially Responsible Person</td><td>Does not press a daily button. May look at the four status lines. After the proving run, may turn on Email, Text, or both.</td></tr>
+</tbody>
+</table>
+
+<h2>The first weeks, then the watchdog proper</h2>
+<p>On a new site there is no finished profile yet. The same evening clock builds one. Each business day it adds one column, for 30 business days. Saturday and Sunday during those weeks do not add a column. In that period the status line says OK when the night finished, or FAIL when it did not. It does not yet grade anomalies.</p>
+<p>After the 30th business-day column is on file, the clock stops adding columns. From then on it takes an anomaly picture every calendar day, including Saturday and Sunday.</p>
+
+<h2>What a message is, and what it is not</h2>
+<p>Email and Text stay off during installation and during the proving run. When that run has passed, the responsible person may turn on either switch, or both, and type an address or a mobile number. A message goes out only when the result is MEDIUM or HIGH, or when that night failed. A quiet night sends nothing.</p>
+<p>The message says the night’s result. It does not list every transaction. The detail is on the status page.</p>
+
+<h2>The sentence to keep</h2>
+<p>NGAME-CM is automated ongoing snapshot surveillance. It notifies the responsible person of meaningfully anomalous ledger-profile events. It does not see every QuickBooks save. It does not read the QuickBooks Audit Log. It does not perform a formal audit. The Audit Log stays in QuickBooks, and the organization still reviews it there.</p>
+<p>Something posted and reversed between two evenings is not in the picture. That limit is part of the product. The installation guide is the procedure. This page is the change from Classic.</p>
+</body>
+</html>

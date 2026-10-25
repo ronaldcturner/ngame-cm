@@ -206,32 +206,205 @@ class NGameDualMode:
             # Perform fraud analysis
             fraud_analysis = self.perform_fraud_analysis(comparison_results)
             
-            # Generate risk assessment
+            # Generate risk assessment from the percent deviations (kept for the log).
             risk_assessment = self.generate_risk_assessment(fraud_analysis)
-            
-            # Save fraud analysis results
+
+            # Same end-of-night sequence as the fraud-analysis flow: z-score ranking,
+            # account mapping, taxonomy loaded into Ollama, management warnings.
+            # This uses the CPI array already computed. It does not pull QuickBooks again.
+            runup = self.run_misappropriation_runup(cpi_values)
+            if not runup:
+                print("❌ Misappropriation runup failed. No nightly verdict was written.")
+                return None
+
+            warning_result = runup["warning_result"]
+            cc_watch = self.run_credit_card_watch()
+            sequence = self.run_sequence_pattern(cpi_values)
+            cc_sum = (cc_watch or {}).get("summary") or {}
+            seq_high = 0
+            seq_medium = 0
+            if sequence and sequence.get("scpi"):
+                seq_high = sequence["scpi"].get("high_count") or 0
+                seq_medium = sequence["scpi"].get("medium_count") or 0
             fraud_results = {
                 "analysis_date": datetime.now().isoformat(),
                 "today_cpi_values": cpi_values,
                 "reference_averages": reference_averages,
                 "comparison_results": comparison_results,
                 "fraud_analysis": fraud_analysis,
-                "risk_assessment": risk_assessment
+                "risk_assessment": risk_assessment,
+                "comparison_result": runup["comparison_result"],
+                "anomaly_result": runup["anomaly_result"],
+                "account_result": runup["account_result"],
+                "llm_result": runup["llm_result"],
+                "warning_result": warning_result,
+                "cc_watch_result": cc_watch,
+                "sequence_result": sequence,
+                "summary": {
+                    "overall_risk_level": warning_result.get("overall_risk_level", "UNKNOWN"),
+                    "top_anomalies_identified": len(runup["anomaly_result"].get("top_anomalies") or []),
+                    "management_warnings_generated": len(warning_result.get("warnings") or []),
+                    "llm_matches_found": len(runup["llm_result"].get("matches") or []),
+                    "sequence_window": 5,
+                    "sequence_active": bool(sequence and sequence.get("comparison", {}).get("success")),
+                    "sequence_high_count": seq_high,
+                    "sequence_medium_count": seq_medium,
+                    "cc_watch_flagged": cc_sum.get("total_flagged", 0),
+                    "cc_watch_transactions": cc_sum.get("total_cc_transactions", 0),
+                    "cc_watch_critical": cc_sum.get("critical_count", 0),
+                    "cc_watch_high": cc_sum.get("high_count", 0),
+                    "cc_watch_structuring": cc_sum.get("structuring_flags", 0),
+                    "cc_watch_highest_risk": cc_sum.get("highest_risk_level", "CLEAR"),
+                },
             }
-            
+
             with open(self.fraud_analysis_file, 'w') as f:
-                json.dump(fraud_results, f, indent=2)
-            
+                json.dump(fraud_results, f, indent=2, default=str)
+
             print("✅ Fraud analysis completed")
-            print(f"📊 Risk assessment: {risk_assessment['overall_risk']}")
+            print(f"📊 Profile risk: {risk_assessment['overall_risk']}")
+            print(f"🎯 Verdict: {fraud_results['summary']['overall_risk_level']}")
+            print(f"⚠️  Management warnings: {fraud_results['summary']['management_warnings_generated']}")
+            print(f"💳 Credit-card watch: {fraud_results['summary']['cc_watch_flagged']} flagged")
+            if fraud_results["summary"]["sequence_active"]:
+                print(f"📈 Multi-day pattern: HIGH={seq_high} MEDIUM={seq_medium}")
+            else:
+                print("📈 Multi-day pattern: still collecting nights")
             print(f"📁 Results saved to: {self.fraud_analysis_file}")
-            
+
             return fraud_results
             
         except Exception as e:
             print(f"❌ Error in fraud analysis: {e}")
             return None
     
+    def run_misappropriation_runup(self, cpi_values):
+        """Z-score rank, then taxonomy + Ollama, then the management warnings.
+
+        Called only on a fraud night, after today's CPI array already exists.
+        Does not change μ, σ, or the z-score cutoffs. Does not pull QuickBooks.
+        """
+        taxonomy = "Asset_Misappropriation.ttl"
+        if not os.path.exists(taxonomy):
+            print(f"❌ Asset misappropriation taxonomy not found: {taxonomy}")
+            return None
+        print("📚 Loading asset misappropriation taxonomy for the nightly verdict")
+        try:
+            from ngame_churn_comparison_agent import NGameChurnComparisonAgent
+            from ngame_anomaly_identification_agent import NGameAnomalyIdentificationAgent
+            from ngame_account_mapping_agent import NGameAccountMappingAgent
+            from ngame_llm_analysis_agent import NGameLLMAnalysisAgent
+            from ngame_management_warning_agent import NGameManagementWarningAgent
+
+            churn = NGameChurnComparisonAgent()
+            comparison = churn.compare_churn_profiles(cpi_values, self.training_matrix_file)
+            if not comparison.get("success"):
+                print(f"❌ Churn comparison failed: {comparison.get('error')}")
+                return None
+            ranking = churn.rank_differences(comparison["differences"])
+            if not ranking.get("success"):
+                print(f"❌ Difference ranking failed: {ranking.get('error')}")
+                return None
+            anomalies = NGameAnomalyIdentificationAgent().identify_top_anomalies(
+                ranking["ranked_differences"], top_n=3
+            )
+            if not anomalies.get("success"):
+                print(f"❌ Anomaly identification failed: {anomalies.get('error')}")
+                return None
+            accounts = NGameAccountMappingAgent().map_to_chart_of_accounts(
+                anomalies["top_anomalies"]
+            )
+            if not accounts.get("success"):
+                print(f"❌ Account mapping failed: {accounts.get('error')}")
+                return None
+            print("🤖 Submitting the flagged accounts and the taxonomy to Ollama")
+            llm = NGameLLMAnalysisAgent().analyze_misappropriation_risks(
+                accounts["account_mappings"], taxonomy
+            )
+            if not llm.get("success"):
+                print(f"❌ Ollama verdict failed: {llm.get('error')}")
+                return None
+            warnings = NGameManagementWarningAgent().generate_management_warnings(
+                llm.get("matches") or [], llm.get("risk_assessments") or []
+            )
+            if not warnings.get("success"):
+                print(f"❌ Management warnings failed: {warnings.get('error')}")
+                return None
+            print(f"✅ Ollama verdict: {warnings.get('overall_risk_level')}")
+            return {
+                "comparison_result": comparison,
+                "anomaly_result": anomalies,
+                "account_result": accounts,
+                "llm_result": llm,
+                "warning_result": warnings,
+            }
+        except Exception as exc:
+            print(f"❌ Misappropriation runup failed: {exc}")
+            return None
+
+    def run_credit_card_watch(self):
+        """Scan today's snapshot for card misuse. Does not pull QuickBooks."""
+        print("💳 Credit-card watch")
+        try:
+            from ngame_credit_card_watch_agent import NGameCreditCardWatchAgent
+
+            result = NGameCreditCardWatchAgent().scan_today_transactions()
+            summary = result.get("summary") or {}
+            print(
+                f"   {summary.get('total_cc_transactions', 0)} card charges, "
+                f"{summary.get('total_flagged', 0)} flagged"
+            )
+            return result
+        except Exception as exc:
+            print(f"❌ Credit-card watch failed: {exc}")
+            return {
+                "success": False,
+                "error": str(exc),
+                "cc_flags": [],
+                "structuring_flags": [],
+                "summary": {},
+            }
+
+    def run_sequence_pattern(self, cpi_values):
+        """Add tonight to the 5-night buffer and score a sustained pattern.
+
+        The first nights only fill the buffer. A short buffer is not a failed night.
+        """
+        print("📈 Multi-day pattern")
+        try:
+            from ngame_cpi_analysis_agent import NGameCpiAnalysisAgent
+            from ngame_churn_comparison_agent import NGameChurnComparisonAgent
+            from ngame_sequence_cpi_agent import NGameSequenceCpiAgent
+
+            cpi_agent = NGameCpiAnalysisAgent()
+            cpi_agent.append_to_rolling_buffer({
+                "success": True,
+                "cpi_array": list(cpi_values),
+                "analysis_timestamp": datetime.now().isoformat(),
+            })
+            scpi = NGameSequenceCpiAgent().compute_scpi(window=5)
+            if not scpi.get("success"):
+                print(f"   skipped: {scpi.get('error', 'unknown error')}")
+                return None
+            if not scpi.get("ready"):
+                print(f"   collecting: {scpi.get('days_available', 0)}/5 nights")
+                return {"scpi": scpi, "comparison": {}}
+            comparison = NGameChurnComparisonAgent().compare_sequence_profiles(
+                scpi["scpi_array"],
+                self.training_matrix_file,
+                scpi["window_size"],
+                weighted_scpi_array=scpi.get("weighted_scpi_array"),
+            )
+            print(
+                f"   {scpi.get('window_size')} nights  "
+                f"HIGH={scpi.get('high_count', 0)}  "
+                f"MEDIUM={scpi.get('medium_count', 0)}"
+            )
+            return {"scpi": scpi, "comparison": comparison}
+        except Exception as exc:
+            print(f"❌ Multi-day pattern failed: {exc}")
+            return None
+
     def compare_cpi_arrays(self, today_cpi, reference_cpi):
         """Compare Today's CPI values with reference averages."""
         if len(today_cpi) != len(reference_cpi):

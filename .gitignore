@@ -1,4 +1,6 @@
 # ── Secrets (NEVER commit these) ──────────────────────────────────────
+ngame_notify_settings.json
+ngame_notify_secrets.json
 quickbooks_config.json
 quickbooks_config-*.json
 *copy.json

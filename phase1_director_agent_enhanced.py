@@ -39,31 +39,25 @@ class EnhancedPhase1DirectorAgent(Phase1DirectorAgent):
         return True
     
     def run_enhanced_phase1(self):
-        """Run enhanced Phase 1 with file management."""
+        """Run Phase I through the extraction agent that already writes Today.ttl.
+
+        EnhancedPhase1DirectorAgent has no run() method. Calling it raised
+        AttributeError and the scheduler retried every minute. The daily
+        extractor already shifts Today.ttl and writes a new one.
+        """
         print("🚀 Enhanced Phase 1 - Data Extraction with File Management")
         print("=" * 70)
-        
-        # Step 1: Shift existing Today.ttl to Yesterday.ttl
-        print("\n📁 Step 1: File Management")
-        if not self.shift_ttl_files():
-            print("❌ File management failed")
-            return False
-        
-        # Step 2: Run Phase 1 to generate new Today.ttl
-        print("\n📊 Step 2: Data Extraction")
         try:
-            # Run the original Phase 1 workflow
-            result = self.run()
-            
-            if result and os.path.exists(self.today_file):
-                print(f"✅ Enhanced Phase 1 completed successfully")
+            from ngame_data_extraction_agent import NGameDataExtractionAgent
+            result = NGameDataExtractionAgent().extract_daily_data()
+            if result.get("success") and os.path.exists(self.today_file):
+                print("✅ Enhanced Phase 1 completed successfully")
                 print(f"📁 Generated: {self.today_file}")
-                print(f"📁 Previous: {self.yesterday_file}")
                 return True
-            else:
-                print(f"❌ Enhanced Phase 1 failed")
-                return False
-                
+            print("❌ Enhanced Phase 1 failed")
+            if result.get("error"):
+                print(result["error"])
+            return False
         except Exception as e:
             print(f"❌ Error in Phase 1 execution: {e}")
             return False

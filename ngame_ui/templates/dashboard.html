@@ -278,11 +278,12 @@
             <div class="row mb-4">
                 <div class="col-12">
                     <h1 class="text-white mb-2">{% if frp_mode %}NGAME Daily Monitoring{% else %}Dashboard{% endif %}</h1>
-                    <p class="text-white-50">{% if frp_mode %}Run today's check, then review anomalies and risk level below.{% else %}Ontology-based anomaly detection system overview{% endif %}</p>
+                    <p class="text-white-50">{% if frp_mode %}{% if dashboard_is_launcher %}Last run, last result, and next scheduled check are on this page. Use the button only as a consultant override.{% else %}The scheduler takes the daily picture. Under NGAME Operations: last run, last result, scheduled successes, and next scheduled. No click.{% endif %}{% else %}Ontology-based anomaly detection system overview{% endif %}</p>
                 </div>
             </div>
 
-            <!-- Training progress -->
+            {% if not (frp_mode and not dashboard_is_launcher) %}
+            <!-- Training progress. Hidden when the scheduler owns the daily picture. -->
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="card" style="border-left:4px solid #2CA01C;">
@@ -302,6 +303,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
             {% if not frp_mode %}
             <!-- System Status (consultant / lab) -->
@@ -350,18 +352,73 @@
                                     <span class="spinner-border spinner-border-sm me-1" role="status"></span>Running…
                                 </span>
                             </h5>
-                            <p class="text-muted small mb-3">{% if frp_mode %}Click the button for your current phase (shown above), then review results on this page.{% else %}Launch pipeline operations directly from the dashboard.{% endif %}</p>
+                            <p class="text-muted small mb-3" id="opsHelpText">{% if frp_mode %}Scheduled runs do not require a click. Review the lamp below; live output is for consultant diagnosis.{% else %}Launch pipeline operations directly from the dashboard.{% endif %}</p>
 
-                            {% if frp_mode %}
-                            <div class="mb-3">
+                            <div id="cmLamp" class="row g-2 mb-3">
+                                <div class="col-md-3">
+                                    <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+                                        <div class="text-muted small">Last run</div>
+                                        <div class="fw-semibold" id="lampLastRun">—</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+                                        <div class="text-muted small">Last result</div>
+                                        <div class="fw-semibold" id="lampLastResult">—</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+                                        <div class="text-muted small">Scheduled successes</div>
+                                        <div class="fw-semibold" id="lampStreak">—</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-2 rounded-3 h-100" style="background:#f8fafc;border:1px solid #e2e8f0;">
+                                        <div class="text-muted small">Next scheduled</div>
+                                        <div class="fw-semibold" id="lampNext">—</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="notifySettings" class="mt-3 p-3 rounded-3" style="background:#f2f2f7;">
+                                <div class="fw-semibold mb-1">Notifications</div>
+                                <p class="text-muted small mb-3">A message goes out only when last result is MEDIUM or HIGH, or when that night’s picture failed. A quiet night sends nothing. The picture still runs if these are off.</p>
+                                <div class="bg-white rounded-3 px-3" style="border:1px solid #e5e5ea;">
+                                    <div class="d-flex justify-content-between align-items-center py-3" style="border-bottom:1px solid #e5e5ea;">
+                                        <div class="fw-semibold">Email</div>
+                                        <div class="form-check form-switch m-0">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="notifyEmailOn" style="width:2.6rem;height:1.5rem;">
+                                        </div>
+                                    </div>
+                                    <div class="py-2" id="notifyEmailField">
+                                        <input id="notifyEmailTo" type="email" class="form-control border-0 px-0" placeholder="name@example.com" autocomplete="email">
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center py-3" style="border-top:1px solid #e5e5ea;border-bottom:1px solid #e5e5ea;">
+                                        <div class="fw-semibold">Text</div>
+                                        <div class="form-check form-switch m-0">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="notifyTextOn" style="width:2.6rem;height:1.5rem;">
+                                        </div>
+                                    </div>
+                                    <div class="py-2" id="notifyTextField">
+                                        <input id="notifyTextTo" type="tel" class="form-control border-0 px-0" placeholder="Mobile number" autocomplete="tel">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-link px-0 mt-2" id="notifySave">Save</button>
+                                <span class="text-muted small ms-2" id="notifySaved"></span>
+                            </div>
+
+                            {% if frp_mode and dashboard_is_launcher %}
+                            <div class="mb-3" id="btnDailyWrap">
                                 <button id="btnDaily" class="btn btn-lg w-100 text-white" style="background:#2CA01C;"
                                         onclick="launchOperation('daily')">
-                                    <i class="fas fa-play me-2"></i><span id="btnDailyLabel">Run Today's NGAME Check</span>
+                                    <i class="fas fa-play me-2"></i><span id="btnDailyLabel">Consultant override</span>
                                 </button>
+                                <div class="text-muted small mt-1">Starts a run now. The scheduler is the normal launcher.</div>
                             </div>
                             {% endif %}
 
-                            <div class="row g-2 mb-3" id="opsButtonRow">
+                            <div class="row g-2 mb-3" id="opsButtonRow" {% if frp_mode %}style="display:none"{% endif %}>
                                 <!-- Training -->
                                 <div class="col-md-6">
                                     <div class="p-3 rounded-3" style="background:#f0fdf4;border:1px solid #bbf7d0;">
@@ -665,6 +722,7 @@
         const DASHBOARD_BUILD = {{ dashboard_build | default('dev') | tojson }};
 
         const FRP_MODE = {{ frp_mode | tojson }};
+        const DASHBOARD_IS_LAUNCHER = {{ dashboard_is_launcher | default(true) | tojson }};
         const SHOW_MANAGEMENT_WARNINGS = {{ show_management_warnings | default(true) | tojson }};
         const SHOW_TOTAL_ANALYSES = {{ show_total_analyses | default(true) | tojson }};
         const SHOW_ACTIVE_ALERTS = {{ show_active_alerts | default(true) | tojson }};
@@ -700,9 +758,14 @@
             initSocketIfEnabled();
             loadDashboardStats();
             loadTrainingStatus();
+            loadNotifySettings();
             if (FRP_MODE) {
                 const row = document.getElementById('opsButtonRow');
                 if (row) row.classList.add('d-none');
+                if (!DASHBOARD_IS_LAUNCHER) {
+                    const wrap = document.getElementById('btnDailyWrap');
+                    if (wrap) wrap.classList.add('d-none');
+                }
             }
         });
         
@@ -770,7 +833,9 @@
                 analysisChart.options.scales.y.max = 1;
                 analysisChart.update();
                 if (caption) {
-                    caption.textContent = 'No trend data yet — run training days or a fraud check.';
+                    caption.textContent = FRP_MODE
+                        ? 'No trend data yet. Points appear as the scheduler adds business days.'
+                        : 'No trend data yet — run training days or a fraud check.';
                 }
                 return;
             }
@@ -942,9 +1007,47 @@
             if (data.training_status) {
                 updateTrainingStatusUI(data.training_status);
             }
+            updateCmLamp(data.cm_lamp);
 
             renderSequencePanel(data);
             renderCcWatchPanel(data);
+        }
+
+        function loadNotifySettings() {
+            const emailOn = document.getElementById('notifyEmailOn');
+            const textOn = document.getElementById('notifyTextOn');
+            const emailTo = document.getElementById('notifyEmailTo');
+            const textTo = document.getElementById('notifyTextTo');
+            const save = document.getElementById('notifySave');
+            const saved = document.getElementById('notifySaved');
+            if (!emailOn || !save) return;
+            fetch('/api/notify-settings')
+                .then(r => r.json())
+                .then(data => {
+                    emailOn.checked = !!data.email_on;
+                    textOn.checked = !!data.text_on;
+                    emailTo.value = data.email_to || '';
+                    textTo.value = data.text_to || '';
+                })
+                .catch(() => {});
+            save.addEventListener('click', function() {
+                saved.textContent = '';
+                fetch('/api/notify-settings', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        email_on: emailOn.checked,
+                        email_to: emailTo.value,
+                        text_on: textOn.checked,
+                        text_to: textTo.value
+                    })
+                }).then(r => {
+                    if (!r.ok) throw new Error('save failed');
+                    saved.textContent = 'Saved';
+                }).catch(() => {
+                    saved.textContent = 'Not saved';
+                });
+            });
         }
 
         function loadTrainingStatus() {
@@ -970,7 +1073,15 @@
                 bar.textContent = pct + '%';
             }
             if (text) {
-                if (status.training_complete) {
+                if (FRP_MODE) {
+                    if (status.training_complete) {
+                        text.textContent = `${days} business days are on file. The scheduler takes the daily picture. No click.`;
+                    } else if (!status.matrix_exists) {
+                        text.textContent = `No training days on file yet. The scheduler adds one column each business day until ${target} are on file. No click.`;
+                    } else {
+                        text.textContent = `Day ${days} of ${target}. The scheduler adds the next column on the next business day. ${status.days_remaining} business day(s) remaining.`;
+                    }
+                } else if (status.training_complete) {
                     text.textContent = `Training complete (${days} of ${target} business days). Use Daily Fraud Check each business day.`;
                 } else if (!status.matrix_exists) {
                     text.textContent = `No training days recorded yet. Run your first training day (${target} required).`;
@@ -979,7 +1090,11 @@
                 }
             }
             if (badge && title) {
-                if (status.training_complete) {
+                if (status.training_complete && FRP_MODE) {
+                    badge.textContent = 'Phase II';
+                    badge.className = 'badge bg-primary';
+                    title.textContent = 'Scheduled picture';
+                } else if (status.training_complete) {
                     badge.textContent = 'Phase II';
                     badge.className = 'badge bg-primary';
                     title.textContent = 'Daily Fraud Monitoring';
@@ -990,15 +1105,46 @@
                 }
             }
             if (btnDailyLabel) {
-                btnDailyLabel.textContent = status.training_complete
-                    ? "Run Today's Fraud Check"
-                    : "Run Today's Training Day";
+                btnDailyLabel.textContent = 'Consultant override';
             }
             const btnTrain = document.getElementById('btnTrain');
             const btnFraud = document.getElementById('btnFraud');
             if (btnTrain && btnFraud && !FRP_MODE) {
                 btnTrain.disabled = !!status.training_complete;
                 btnFraud.disabled = !status.training_complete;
+            }
+        }
+
+        function formatLampTime(iso) {
+            if (!iso) return '—';
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return String(iso);
+            return d.toLocaleString();
+        }
+
+        function updateCmLamp(lamp) {
+            const lastEl = document.getElementById('lampLastRun');
+            const resultEl = document.getElementById('lampLastResult');
+            const streakEl = document.getElementById('lampStreak');
+            const nextEl = document.getElementById('lampNext');
+            if (!lastEl || !lamp) return;
+            lastEl.textContent = formatLampTime(lamp.last_run_utc);
+            const result = lamp.last_result || 'NONE';
+            resultEl.textContent = result;
+            resultEl.className = 'fw-semibold';
+            if (result === 'FAIL') resultEl.style.color = '#b91c1c';
+            else if (result === 'HIGH') resultEl.style.color = '#b91c1c';
+            else if (result === 'MEDIUM') resultEl.style.color = '#b45309';
+            else if (result === 'LOW' || result === 'OK') resultEl.style.color = '#15803d';
+            else resultEl.style.color = '';
+            const n = lamp.consecutive_scheduled_success_days;
+            streakEl.textContent = (typeof n === 'number') ? (n + ' day' + (n === 1 ? '' : 's')) : '—';
+            nextEl.textContent = lamp.next_scheduled_local
+                ? formatLampTime(lamp.next_scheduled_local)
+                : '—';
+            if (FRP_MODE && lamp.dashboard_is_launcher === false) {
+                const wrap = document.getElementById('btnDailyWrap');
+                if (wrap) wrap.classList.add('d-none');
             }
         }
 

@@ -92,39 +92,38 @@ class NGameLLMAnalysisAgent:
         logger.info(f"📚 {self.name}: Loading misappropriation taxonomy from {taxonomy_file}")
         
         try:
-            from rdflib import Graph, Namespace
+            from rdflib import Graph
             from rdflib.namespace import RDF, RDFS, OWL
             
             g = Graph()
             g.parse(taxonomy_file, format="turtle")
-            
+
+            # Hand transcription of the ACFE asset-misappropriation tree.
+            ontology_ns = "http://www.semanticweb.org/ronturner/ontologies/2025/6/untitled-ontology-6"
             taxonomy = {
                 'misappropriation_types': {},
                 'risk_indicators': {},
                 'total_types': 0
             }
-            
-            # Define namespace for misappropriation taxonomy
-            misapp = Namespace("http://www.semanticweb.org/misappropriation/ontology#")
-            
-            # Extract misappropriation types and their properties
-            for s, p, o in g.triples((None, RDF.type, None)):
-                if str(o).startswith("http://www.semanticweb.org/misappropriation/ontology#"):
-                    class_name = str(o).split("#")[-1]
-                    individual_uri = str(s)
-                    
-                    # Extract properties for this misappropriation type
-                    misapp_props = {}
-                    for prop_s, prop_p, prop_o in g.triples((s, None, None)):
-                        if str(prop_p).startswith("http://www.semanticweb.org/misappropriation/ontology#"):
-                            prop_name = str(prop_p).split("#")[-1]
-                            misapp_props[prop_name] = str(prop_o)
-                    
-                    taxonomy['misappropriation_types'][class_name] = {
-                        'uri': individual_uri,
-                        'properties': misapp_props
-                    }
-            
+
+            for class_uri in g.subjects(RDF.type, OWL.Class):
+                uri = str(class_uri)
+                if not uri.startswith(ontology_ns):
+                    continue
+                class_name = uri.rsplit("#", 1)[-1].rsplit("/", 1)[-1]
+                props = {}
+                parent = next(g.objects(class_uri, RDFS.subClassOf), None)
+                if parent is not None:
+                    parent_uri = str(parent)
+                    props["parent"] = parent_uri.rsplit("#", 1)[-1].rsplit("/", 1)[-1]
+                comment = next(g.objects(class_uri, RDFS.comment), None)
+                if comment is not None:
+                    props["description"] = str(comment)
+                taxonomy['misappropriation_types'][class_name] = {
+                    'uri': uri,
+                    'properties': props
+                }
+
             taxonomy['total_types'] = len(taxonomy['misappropriation_types'])
             
             logger.info(f"✅ {self.name}: Loaded {taxonomy['total_types']} misappropriation types")
@@ -203,6 +202,8 @@ class NGameLLMAnalysisAgent:
             
             # Add relevant properties
             properties = data['properties']
+            if properties.get('parent'):
+                taxonomy_info += f"  Parent: {properties['parent']}\n"
             if properties.get('description'):
                 taxonomy_info += f"  Description: {properties['description']}\n"
             if properties.get('riskLevel'):
@@ -227,7 +228,7 @@ Please analyze this account for potential misappropriation risks. Consider:
 1. Does this account type typically involve cash or assets that could be misappropriated?
 2. Are there any red flags in the account properties?
 3. How does this account relate to the transaction type being analyzed?
-4. What misappropriation types from the taxonomy might apply?
+4. What misappropriation types from the taxonomy might apply? Use the type names exactly as listed.
 
 Provide your analysis in the following JSON format:
 {{
@@ -296,6 +297,16 @@ Focus on identifying specific misappropriation types from the taxonomy that coul
         except:
             return False
     
+    def _canonical_type_name(self, raw: Any, taxonomy: Dict[str, Any]) -> Optional[str]:
+        """Keep a model answer only when it names a class in the loaded taxonomy."""
+        types = taxonomy.get("misappropriation_types") or {}
+        text = str(raw).strip()
+        if text in types:
+            return text
+        folded = text.replace(" ", "_")
+        lookup = {name.lower(): name for name in types}
+        return lookup.get(folded.lower())
+
     def _parse_llm_response(self, response: str, account: Dict[str, Any], taxonomy: Dict[str, Any]) -> Dict[str, Any]:
         """Parse LLM response and extract matches and risk assessment."""
         logger.info(f"📊 {self.name}: Parsing LLM response")
@@ -321,11 +332,12 @@ Focus on identifying specific misappropriation types from the taxonomy that coul
             misappropriation_types = analysis_data.get('misappropriation_types', [])
             
             for misapp_type in misappropriation_types:
-                if misapp_type in taxonomy['misappropriation_types']:
+                canonical = self._canonical_type_name(misapp_type, taxonomy)
+                if canonical:
                     match = {
                         'account_name': account['name'],
                         'account_type': account['type'],
-                        'misappropriation_type': misapp_type,
+                        'misappropriation_type': canonical,
                         'confidence': analysis_data.get('confidence', 0.5),
                         'risk_indicators': analysis_data.get('risk_indicators', []),
                         'explanation': analysis_data.get('explanation', '')

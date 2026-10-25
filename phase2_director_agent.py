@@ -414,6 +414,37 @@ class ReportGenerationAgent:
         }
 
 
+class Phase2DirectorAgent:
+    """Name ngame_dual_mode already imports.
+
+    Runs the existing CPI agent and writes Today_Churn_Matrix_Ready.json
+    in the shape extract_cpi_values already reads. Does not change CPI math.
+    """
+
+    def run(self):
+        import json
+
+        from ngame_cpi_analysis_agent import NGameCpiAnalysisAgent
+        from ngame_transaction_types import STANDARD_TRANSACTION_TYPES
+
+        result = NGameCpiAnalysisAgent().analyze_cpi_coefficients()
+        if not result.get("success"):
+            raise RuntimeError(result.get("error") or "CPI analysis failed")
+        cpi_array = result.get("cpi_array") or []
+        if len(cpi_array) != len(STANDARD_TRANSACTION_TYPES):
+            raise RuntimeError(
+                f"CPI array length {len(cpi_array)} != {len(STANDARD_TRANSACTION_TYPES)}"
+            )
+        labels = [f"{name}_similarity" for name in STANDARD_TRANSACTION_TYPES]
+        payload = {
+            "pandas_series_ready": {"index": labels},
+            "numpy_array": list(cpi_array),
+        }
+        with open("Today_Churn_Matrix_Ready.json", "w", encoding="utf-8") as fh:
+            json.dump(payload, fh)
+        return result
+
+
 def main():
     """Main function to run the director agent."""
     print("🚀 NGAME Agent-Driven Pipeline - Phase 2 Demo")

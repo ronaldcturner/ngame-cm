@@ -26,12 +26,16 @@ try:
 except Exception:
     pass
 
+from ngame_cm_config import load_cm_config
+from ngame_notify import load_settings, save_settings
 from ngame_dashboard_alerts import (
     build_dollar_alarm_alerts,
     filter_top_anomalies_for_display,
     format_cc_flags_for_display,
     merge_full_fraud_comparison,
 )
+from ngame_run_journal import lamp_status, write_run_record
+from ngame_run_lock import child_lock_env, try_acquire_pipeline_lock
 from ngame_dashboard_category_churn import build_category_day_activity
 from ngame_dashboard_trends import (
     append_dashboard_activity,
@@ -313,6 +317,8 @@ def _load_latest_artifacts() -> Dict[str, Any]:
         "success": True,
         "sources": sources,
         "errors": errors[-10:],  # keep response small
+        "dashboard_is_launcher": bool(load_cm_config().get("dashboard_is_launcher")),
+        "cm_lamp": lamp_status(),
         "training_status": training_status,
         "analysis_trends": analysis_trends,
         "recent_activity": recent_activity,
@@ -420,6 +426,7 @@ def inject_ui_config():
         "show_active_alerts": SHOW_ACTIVE_ALERTS,
         "training_status": _get_training_status(),
         "dashboard_build": "2026-07-08-ccwatch2",
+        "dashboard_is_launcher": bool(load_cm_config().get("dashboard_is_launcher")),
     }
 
 
@@ -696,6 +703,7 @@ def _stream_script(
     script_name: str,
     stdin_input: str = "y\n",
     activity_type: Optional[str] = None,
+    lock_handle=None,
 ):
     """
     Run a top-level NGAME script as a subprocess, stream its output into
@@ -704,11 +712,12 @@ def _stream_script(
     root = _repo_root()
     script = root / script_name
     label = activity_type or script_name
+    exit_code: Optional[int] = None
 
     ngame_state.operation_log = [f"▶ Starting {script_name} …", ""]
 
     try:
-        child_env = os.environ.copy()
+        child_env = child_lock_env(os.environ.copy())
         child_env["PYTHONIOENCODING"] = "utf-8"
         child_env["PYTHONUTF8"] = "1"
         proc = subprocess.Popen(
@@ -750,6 +759,12 @@ def _stream_script(
                 "status": "success" if exit_code == 0 else "error",
             },
         )
+        if lock_handle is not None:
+            write_run_record(
+                trigger="dashboard",
+                ok=(exit_code == 0),
+                exit_code=exit_code,
+            )
 
     except Exception as exc:
         with ngame_state._operation_lock:
@@ -762,7 +777,15 @@ def _stream_script(
                 "status": "error",
             },
         )
+        if lock_handle is not None:
+            write_run_record(
+                trigger="dashboard",
+                ok=False,
+                exit_code=1,
+            )
     finally:
+        if lock_handle is not None:
+            lock_handle.release()
         ngame_state.operation_running = False
 
 
@@ -780,6 +803,7 @@ def api_ui_config():
         "show_total_analyses": SHOW_TOTAL_ANALYSES,
         "show_active_alerts": SHOW_ACTIVE_ALERTS,
         "training_status": _get_training_status(),
+        "dashboard_is_launcher": bool(load_cm_config().get("dashboard_is_launcher")),
     })
 
 
@@ -792,61 +816,100 @@ def api_run_daily():
     return api_run_fraud_analysis()
 
 
-@app.route('/api/run-training', methods=['POST'])
-def api_run_training():
-    """Launch one training day (run_training_flow.py) in the background."""
+def _already_running_response():
+    return jsonify({'success': False, 'message': 'An operation is already running.'})
+
+
+def _begin_locked_operation(operation_name: str):
+    """Acquire in-memory + file lock. Returns (lock_handle, error_response)."""
     with ngame_state._operation_lock:
         if ngame_state.operation_running:
-            return jsonify({'success': False, 'message': 'An operation is already running.'})
+            return None, _already_running_response()
+        handle = try_acquire_pipeline_lock()
+        if handle is None:
+            write_run_record(
+                trigger="dashboard",
+                ok=False,
+                exit_code=2,
+                skipped_reason="lock_busy",
+            )
+            return None, _already_running_response()
         ngame_state.operation_running = True
-        ngame_state.operation_name    = "Training Day"
-        ngame_state.operation_log     = []
+        ngame_state.operation_name = operation_name
+        ngame_state.operation_log = []
+        return handle, None
 
+
+def _start_locked_script(
+    *,
+    script_name: str,
+    stdin_input: str,
+    activity_type: str,
+    operation_name: str,
+    started_message: str,
+):
+    handle, error = _begin_locked_operation(operation_name)
+    if error is not None:
+        return error
     t = threading.Thread(
         target=_stream_script,
-        args=("run_training_flow.py", "y\n", "Training day"),
+        kwargs={
+            "script_name": script_name,
+            "stdin_input": stdin_input,
+            "activity_type": activity_type,
+            "lock_handle": handle,
+        },
         daemon=True,
     )
     t.start()
-    return jsonify({'success': True, 'message': 'Training run started.'})
+    return jsonify({'success': True, 'message': started_message})
+
+
+@app.route('/api/run-training', methods=['POST'])
+def api_run_training():
+    """Launch one training day (run_training_flow.py) in the background."""
+    return _start_locked_script(
+        script_name="run_training_flow.py",
+        stdin_input="y\n",
+        activity_type="Training day",
+        operation_name="Training Day",
+        started_message="Training run started.",
+    )
 
 
 @app.route('/api/run-fraud-analysis', methods=['POST'])
 def api_run_fraud_analysis():
     """Launch daily fraud / churn analysis (run_fraud_analysis.py) in the background."""
-    with ngame_state._operation_lock:
-        if ngame_state.operation_running:
-            return jsonify({'success': False, 'message': 'An operation is already running.'})
-        ngame_state.operation_running = True
-        ngame_state.operation_name    = "Daily Churn Analysis"
-        ngame_state.operation_log     = []
-
-    t = threading.Thread(
-        target=_stream_script,
-        args=("run_fraud_analysis.py", "y\n", "Fraud check"),
-        daemon=True,
+    return _start_locked_script(
+        script_name="run_fraud_analysis.py",
+        stdin_input="y\n",
+        activity_type="Fraud check",
+        operation_name="Daily Churn Analysis",
+        started_message="Fraud analysis started.",
     )
-    t.start()
-    return jsonify({'success': True, 'message': 'Fraud analysis started.'})
 
 
 @app.route('/api/run-demo-scenario', methods=['POST'])
 def api_run_demo_scenario():
     """Launch the controlled demo anomaly scenario (run_demo_scenario.py)."""
-    with ngame_state._operation_lock:
-        if ngame_state.operation_running:
-            return jsonify({'success': False, 'message': 'An operation is already running.'})
-        ngame_state.operation_running = True
-        ngame_state.operation_name    = "Demo Scenario"
-        ngame_state.operation_log     = []
-
-    t = threading.Thread(
-        target=_stream_script,
-        args=("run_demo_scenario.py", "", "Demo scenario"),
-        daemon=True,
+    return _start_locked_script(
+        script_name="run_demo_scenario.py",
+        stdin_input="",
+        activity_type="Demo scenario",
+        operation_name="Demo Scenario",
+        started_message="Demo scenario started.",
     )
-    t.start()
-    return jsonify({'success': True, 'message': 'Demo scenario started.'})
+
+
+@app.route('/api/notify-settings', methods=['GET', 'POST'])
+def api_notify_settings():
+    """FRP switches only. Mailbox passwords stay out of this response."""
+    if request.method == 'GET':
+        return jsonify(load_settings())
+    incoming = request.get_json(silent=True) or {}
+    if not isinstance(incoming, dict):
+        return jsonify({"error": "settings must be an object"}), 400
+    return jsonify(save_settings(incoming))
 
 
 @app.route('/api/operation-status')

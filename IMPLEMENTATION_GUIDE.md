@@ -1,5 +1,7 @@
 # NGAME — Implementation Guide
 
+**NGAME-CM is this repository.** The proved install is Windows. A Mac release is coming. Do not follow the daily-click steps later in this file. Those steps are the older Classic procedure. For NGAME-CM, use **[NGAME_CM_INSTALLATION_GUIDE_PC.md](NGAME_CM_INSTALLATION_GUIDE_PC.md)**. The FRP does not click. Hand the FRP **[FRP_OPERATIONS_GUIDE.html](FRP_OPERATIONS_GUIDE.html)**.
+
 **Audience:** Systems administrator or **technical consultant** (NGAME implementation lead) — comfortable with Python, Terminal or PowerShell, and secure handling of API credentials.
 
 **Not for:** The **Financially Responsible Person (FRP)**. The FRP uses only the web dashboard. Give them **[FRP_OPERATIONS_GUIDE.html](FRP_OPERATIONS_GUIDE.html)** (print/PDF) or **[FRP_OPERATIONS_GUIDE.md](FRP_OPERATIONS_GUIDE.md)** — not this file.
@@ -12,7 +14,7 @@
 |----------|--------------|----------------|
 | **This file (`README.md` / `IMPLEMENTATION_GUIDE.md`)** | Technical consultant | Clone, Python env, credentials, Ollama, dashboard service, verification, FRP handoff — **same content in both filenames** |
 | **[NGROK_COOKBOOK.md](NGROK_COOKBOOK.md)** | Technical consultant | Track B https tunnel: install ngrok, authtoken, `ngrok http 8000`, `/callback` string |
-| **[FRP_OPERATIONS_GUIDE.md](FRP_OPERATIONS_GUIDE.md)** / **[.html](FRP_OPERATIONS_GUIDE.html)** | FRP | Bookmark, daily training/fraud checks, warnings, QuickBooks Audit Log |
+| **[FRP_OPERATIONS_GUIDE.md](FRP_OPERATIONS_GUIDE.md)** / **[.html](FRP_OPERATIONS_GUIDE.html)** | FRP | No daily click. Evening picture, lamp, warnings, Email and Text, Audit Log |
 | **[ngame_ui/README.md](ngame_ui/README.md)** | Consultants | Dashboard URLs, API endpoints, UI troubleshooting |
 | **[ngame_ui/TROUBLESHOOTING.md](ngame_ui/TROUBLESHOOTING.md)** | Consultants | Dashboard failures and common fixes |
 | **[ANOMALY_INJECTION_AGENT_README.md](ANOMALY_INJECTION_AGENT_README.md)** | Technical validator | Optional injection harness (not for daily FRP use) |
@@ -48,7 +50,7 @@ The bookkeeper does not need to change how they use QuickBooks. NGAME does not w
 | Configure Wave / QuickBooks credentials | Yes | No |
 | Start dashboard service and auto-start at login | Yes | No |
 | Open Terminal or run `git` / `pip` daily | Yes (setup only) | **Never** |
-| Run training or fraud checks | Optional (verification) | Yes — **dashboard only** |
+| Take the evening picture | No. The clock does it | No |
 | Review QuickBooks Audit Log | Advises on protocol | Yes — in QBO browser |
 | Respond to MEDIUM/HIGH warnings | May assist designated contact | Yes — per FRP guide |
 

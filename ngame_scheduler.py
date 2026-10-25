@@ -27,6 +27,7 @@ from typing import Any, Callable, Dict, Optional
 from ngame_cm_config import load_cm_config, local_now
 from ngame_env import configure_utf8_stdio, repo_root
 from ngame_run_journal import read_last_run, snapshot_pipeline_facts, write_run_record
+from ngame_notify import notify_for_record
 from ngame_run_lock import child_lock_env, try_acquire_pipeline_lock
 
 try:
@@ -103,10 +104,29 @@ def decide_tick(
 
 
 def detect_phase() -> str:
-    """Reuse dual-mode's switch; do not invent a second phase rule."""
-    from ngame_dual_mode import NGameDualMode
+    """Same column rule as determine_mode, without its screen text.
 
-    return NGameDualMode().determine_mode()
+    determine_mode prints "Determining NGAME Mode" every time it is called.
+    The scheduler used to call it on every poll, so a finished day still
+    looked like a new QuickBooks pull.
+    """
+    matrix = Path(repo_root()) / "NGAME_Training_Matrix.xlsx"
+    if not matrix.is_file():
+        return "training"
+    try:
+        from openpyxl import load_workbook
+
+        workbook = load_workbook(matrix, read_only=True, data_only=True)
+        try:
+            worksheet = workbook.active
+            training_days = (worksheet.max_column or 0) - 2
+        finally:
+            workbook.close()
+    except Exception:
+        return snapshot_pipeline_facts()["phase"]
+    if training_days < 30:
+        return "training"
+    return "fraud_analysis"
 
 
 def ollama_is_up(url: str = OLLAMA_TAGS_URL, timeout: float = 5.0) -> bool:
@@ -132,11 +152,69 @@ def daily_log_path() -> Path:
     return Path(repo_root()) / "logs" / DAILY_LOG_NAME
 
 
+_PICTURE_FRESH_SECONDS = 20 * 3600
+_PICTURE_MARKS = (
+    "NGAME execution completed successfully",
+    "Fraud Analysis Mode completed successfully",
+    "Fraud analysis completed",
+)
+
+
+def _recent_file(path: Path) -> bool:
+    try:
+        age = time.time() - path.stat().st_mtime
+    except OSError:
+        return False
+    return 0 <= age <= _PICTURE_FRESH_SECONDS
+
+
+def _bytes_have_mark(data: bytes) -> bool:
+    for mark in _PICTURE_MARKS:
+        if mark.encode("utf-8") in data or mark.encode("utf-16-le") in data:
+            return True
+    return False
+
+
+def picture_finished_on(day) -> bool:
+    """True when today's Phase II picture is already on disk.
+
+    The fraud file records a local analysis_date. Match that date. Do not
+    match dates inside ngame_daily.log: those stamps are UTC, and an evening
+    run in Pacific time is already the next calendar day there.
+    """
+    fraud = Path(repo_root()) / "NGAME_Fraud_Analysis.json"
+    stamp = str(day).encode("ascii")
+    if fraud.is_file():
+        try:
+            data = fraud.read_bytes()
+        except OSError:
+            data = b""
+        if b"analysis_date" in data and stamp in data:
+            return True
+        if data and _recent_file(fraud) and b"analysis_date" in data:
+            return True
+    log_path = daily_log_path()
+    if log_path.is_file() and _recent_file(log_path):
+        try:
+            if _bytes_have_mark(log_path.read_bytes()):
+                return True
+        except OSError:
+            pass
+    return False
+
+
+def journal_scheduled(**kwargs):
+    """Journal a scheduled attempt, then notify if the FRP's switches say so."""
+    record = write_run_record(**kwargs)
+    notify_for_record(record)
+    return record
+
+
 def run_dual_mode() -> tuple[int, Optional[str], str]:
     """Lock → ngame_dual_mode.py → tee logs/ngame_daily.log. Parent journals."""
     handle = try_acquire_pipeline_lock()
     if handle is None:
-        write_run_record(
+        journal_scheduled(
             trigger="schedule",
             ok=False,
             exit_code=2,
@@ -175,9 +253,13 @@ def run_dual_mode() -> tuple[int, Optional[str], str]:
             proc.wait()
             code = int(proc.returncode or 0)
         text = "".join(chunks)
-        reason = classify_pipeline_output(text)
-        ok = code == 0 and reason is None
-        write_run_record(
+        completed = "NGAME execution completed successfully" in text
+        # A finished picture is today's run even if the log text mentions
+        # invalid_grant or ollama from an earlier line. Otherwise the next
+        # poll starts another QuickBooks pull the same evening.
+        reason = None if (code == 0 or completed) else classify_pipeline_output(text)
+        ok = code == 0 or completed
+        journal_scheduled(
             trigger="schedule",
             ok=ok,
             exit_code=0 if ok else (code if code != 0 else 1),
@@ -197,7 +279,7 @@ def apply_decision(
     if decision.action == ACTION_IDLE:
         return decision
     if decision.action == ACTION_SKIP and decision.journal:
-        write_run_record(
+        journal_scheduled(
             trigger="schedule",
             ok=True,
             exit_code=0,
@@ -207,7 +289,7 @@ def apply_decision(
         print(f"NGAME scheduler skip: {decision.skipped_reason}")
         return decision
     if decision.action == ACTION_FAIL and decision.journal:
-        write_run_record(
+        journal_scheduled(
             trigger="schedule",
             ok=False,
             exit_code=1,
@@ -242,6 +324,13 @@ def tick(
     if now.hour < int(cfg["run_hour_local"]):
         decision = TickDecision(ACTION_IDLE, note="before run_hour_local")
         return apply_decision(decision, phase=phase or "training", runner=runner)
+    today = now.date().isoformat()
+    if last_run and last_run.get("local_date") == today and (
+        last_run.get("ok")
+        or last_run.get("skipped_reason") in ("already_ran", "wrong_weekday")
+    ):
+        decision = TickDecision(ACTION_IDLE, note="already succeeded today")
+        return apply_decision(decision, phase=phase or "fraud_analysis", runner=runner)
     if phase is None:
         try:
             phase = detect_phase()
@@ -256,6 +345,20 @@ def tick(
         phase=phase,
         ollama_ok=bool(ollama_ok),
     )
+    if decision.action == ACTION_RUN and picture_finished_on(now.date()):
+        print("  already finished today — polling only.")
+        if not (
+            last_run
+            and last_run.get("local_date") == now.date().isoformat()
+            and last_run.get("ok")
+        ):
+            journal_scheduled(
+                trigger="schedule",
+                ok=True,
+                exit_code=0,
+                skipped_reason="already_ran",
+            )
+        decision = TickDecision(ACTION_IDLE, note="already succeeded today")
     return apply_decision(decision, phase=phase, runner=runner)
 
 

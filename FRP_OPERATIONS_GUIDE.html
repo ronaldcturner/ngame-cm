@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NGAME-CM — FRP Operations Guide</title>
+<style>
+@page { margin: 0.75in; }
+body { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; line-height: 1.45; color: #111; max-width: 7.5in; margin: 0 auto; padding: 0.5in; }
+h1 { font-size: 20pt; border-bottom: 2px solid #2CA01C; padding-bottom: 0.25em; }
+h2 { font-size: 14pt; margin-top: 1.25em; color: #1a5c12; page-break-after: avoid; }
+table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 10pt; page-break-inside: avoid; }
+th, td { border: 1px solid #ccc; padding: 0.35em 0.5em; text-align: left; vertical-align: top; }
+th { background: #f0fdf4; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; background: #f3f4f6; padding: 0.1em 0.25em; border-radius: 3px; }
+.print-hint { font-size: 9pt; color: #555; border: 1px dashed #999; padding: 0.5em; margin-bottom: 1em; }
+@media print { .print-hint { display: none; } body { padding: 0; } a { color: inherit; text-decoration: none; } }
+</style>
+</head>
+<body>
+<p class="print-hint"><strong>Print / PDF:</strong> File → Print → Save as PDF. Fill in the blank contact lines before printing.</p>
+<h1>NGAME-CM — Financially Responsible Person (FRP) Operations Guide</h1>
+<p><strong>You are the FRP</strong> if you are the owner, board treasurer, or nonprofit director responsible for the books.</p>
+<p><strong>How you use NGAME-CM:</strong> You do not click to take the picture. The computer takes it each evening. You open the dashboard on that computer when you want to look, and when a message tells you the night was off.</p>
+<p><strong>Who sets things up:</strong> Your NGAME technical contact installs the software. That setup is in <code>NGAME_CM_INSTALLATION_GUIDE_PC.html</code>. You do not need that file.</p>
+<h2>Two people you may call</h2>
+<table>
+<thead><tr><th>Role</th><th>When to call</th></tr></thead>
+<tbody>
+<tr><td><strong>Designated contact</strong></td><td>MEDIUM or HIGH — accounting or leadership review</td></tr>
+<tr><td><strong>NGAME technical contact</strong></td><td>The computer is dark, the page will not load, QuickBooks needs reconnecting</td></tr>
+</tbody>
+</table>
+<p>Fill in the names on the card at the end before you post it by the computer.</p>
+<h2>What the evening picture does</h2>
+<p>The computer stays on. It takes one picture of the QuickBooks Online ledger each evening. It compares that picture with this organization’s own profile. It does not see every save. It does not read the QuickBooks Audit Log. It does not perform an audit, and it does not change QuickBooks.</p>
+<p>While the first 30 business days are still being added, <strong>Last result</strong> is OK or FAIL. After that, <strong>Last result</strong> can be LOW, MEDIUM, or HIGH, including Saturday and Sunday. A quiet night sends nothing.</p>
+<h2>Opening the page</h2>
+<p>The page is on the NGAME computer, not on your own PC.</p>
+<ol>
+<li>The NGAME computer stays signed in. If the screen is locked, sign in. Do not shut it down, sign out, or unplug it.</li>
+<li>Open Chrome to <code>http://localhost:5001/dashboard</code>.</li>
+<li>The title is <strong>NGAME Daily Monitoring</strong>. There is no run button.</li>
+</ol>
+<p>If the page will not load, call your technical contact.</p>
+<h2>What you see</h2>
+<p>Under <strong>NGAME Operations</strong>, four lines:</p>
+<table>
+<thead><tr><th>Line</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><strong>Last run</strong></td><td>When the evening picture finished</td></tr>
+<tr><td><strong>Last result</strong></td><td>OK or FAIL while the profile is still being built. After that: LOW, MEDIUM, HIGH, or FAIL</td></tr>
+<tr><td><strong>Scheduled successes</strong></td><td>How many scheduled nights have succeeded in a row</td></tr>
+<tr><td><strong>Next scheduled</strong></td><td>When the next picture will be taken</td></tr>
+</tbody>
+</table>
+<p>Opening the page does not start a picture.</p>
+<p>On a night the profile marks as off, the same page also shows:</p>
+<ul>
+<li><strong>Overall risk</strong></li>
+<li><strong>Top Anomalies</strong> — the categories that sit off the profile</li>
+<li><strong>Management Warnings</strong> — a misappropriation type name for the related accounts, after the local model is given the taxonomy</li>
+<li><strong>Credit Card Watch</strong> — card charges in that night’s snapshot</li>
+<li><strong>Multi-Day Pattern</strong> — once five nights are on file. Before that the badge says it is still collecting</li>
+</ul>
+<p>FAIL means the picture did not finish. It is not a new fraud reading.</p>
+<h2>Email and text</h2>
+<p>Under <strong>Notifications</strong>, Email and Text start off. After the proving run, you may turn on one or both, type the destination, and click <strong>Save</strong>.</p>
+<ul>
+<li>Email uses the address you typed.</li>
+<li>Text uses the mobile number you typed.</li>
+</ul>
+<p>A message goes out only when the finished picture is MEDIUM, HIGH, or FAIL. A quiet night sends nothing. The message does not name a vendor or a category. It tells you to open the dashboard on the NGAME computer.</p>
+<h2>When the result is MEDIUM or HIGH</h2>
+<p>NGAME does not accuse anyone. A warning means the picture is far from this organization’s profile. That can have an ordinary explanation.</p>
+<ol>
+<li>Open the dashboard on the NGAME computer and read <strong>Last result</strong>, <strong>Top Anomalies</strong>, and <strong>Management Warnings</strong>.</li>
+<li>Screenshot the page.</li>
+<li>Call your designated contact. HIGH: the same day. MEDIUM: within one business day.</li>
+<li>Review the QuickBooks <strong>Audit Log</strong> for that date in QuickBooks Online. The Audit Log is not inside NGAME.</li>
+</ol>
+<p><strong>Designated contact:</strong> _______________________________________________</p>
+<h2>QuickBooks Audit Log</h2>
+<p>Review it in QuickBooks Online: Gear → Tools → Audit Log.</p>
+<table>
+<thead><tr><th>When</th><th>What to review</th></tr></thead>
+<tbody>
+<tr><td>While the 30 business days are being added</td><td>At least weekly: deletions, voids, odd logins, changed amounts</td></tr>
+<tr><td>After MEDIUM or HIGH</td><td>The same day, entries on the flagged date</td></tr>
+<tr><td>After the profile is complete</td><td>Monthly is the minimum</td></tr>
+</tbody>
+</table>
+<p>Call your technical contact before the next evening if you see a deleted or voided transaction, a login you do not recognize, a login at an odd hour, a changed amount, or a new vendor created and paid the same day.</p>
+<h2>What you never do</h2>
+<ul>
+<li>Click to take the daily picture. There is no button for that.</li>
+<li>Shut down, sign out, or unplug the NGAME computer. Locking the screen is the right way to leave it.</li>
+<li>Use Terminal, or move the NGAME folders.</li>
+<li>Install NGAME on the bookkeeper’s computer.</li>
+<li>Tell the bookkeeper about a flagged account before your designated contact says to.</li>
+</ul>
+<p><strong>Technical contact:</strong> _______________________________________________</p>
+<p><em>NGAME-CM FRP Operations Guide · No daily click · Install: NGAME_CM_INSTALLATION_GUIDE_PC.html</em></p>
+</body>
+</html>

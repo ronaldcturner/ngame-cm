@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NGAME-CM — First TCO estimate</title>
+<style>
+@page { margin: 0.75in; }
+body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #111; max-width: 7.5in; margin: 0 auto; padding: 0.5in; }
+h1 { font-size: 20pt; border-bottom: 2px solid #2CA01C; padding-bottom: 0.25em; }
+h2 { font-size: 14pt; margin-top: 1.25em; color: #1a5c12; page-break-after: avoid; }
+h3 { font-size: 12pt; margin-top: 1em; page-break-after: avoid; }
+table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 10pt; page-break-inside: avoid; }
+th, td { border: 1px solid #ccc; padding: 0.35em 0.5em; text-align: left; vertical-align: top; }
+th { background: #f0fdf4; }
+blockquote { margin: 0.75em 0; padding: 0.5em 1em; border-left: 4px solid #2CA01C; background: #f9fafb; }
+.warn { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #b45309; background: #fffbeb; }
+.info { margin: 0.75em 0; padding: 0.6em 1em; border-left: 4px solid #1a5c12; background: #f3f4f6; }
+.print-hint { font-size: 9pt; color: #555; border: 1px dashed #999; padding: 0.5em; margin-bottom: 1em; }
+@media print { .print-hint { display: none; } body { padding: 0; } a { color: inherit; text-decoration: none; } }
+</style>
+</head>
+<body>
+<p class="print-hint"><strong>Print / PDF:</strong> File → Print → Save as PDF. Order-of-magnitude only. Not a quote.</p>
+<h1>NGAME-CM — First TCO estimate</h1>
+<p><strong>Order of magnitude</strong> · 17 Sep 2026 · Not a quote · Not a license price · USD</p>
+<p>Site cost to own and run, versus the tester invitation that said $0 and very low effort.</p>
+<table>
+<thead><tr><th>Tester heading claimed</th><th>Classic first site, actual labor</th><th>CM new cash: host + UPS</th><th>First CM site, consultant time</th></tr></thead>
+<tbody><tr><td>$0</td><td>3 visits</td><td>$500–1,000</td><td>5–8 days</td></tr></tbody>
+</table>
+<div class="warn">
+<p>Classic was never zero-cost. The invitation waived hardware and license for testers. You paid in person: three very long on-site visits. CM adds a real hardware bill and, until the installer exists, does not make the first install simpler than Classic.</p>
+</div>
+
+<h2>Keep two books</h2>
+<table>
+<thead><tr><th>Book</th><th>Who pays</th><th>What belongs here</th><th>What does not</th></tr></thead>
+<tbody>
+<tr><td>Site TCO</td><td>The organization (or you, if still subsidizing testers)</td><td>Box, UPS, power, install days, yearly keep-alive, FRP time</td><td>The 5–10 person-months to productize CM</td></tr>
+<tr><td>Vendor / R&amp;D</td><td>Audithentic</td><td>Scheduler, lamp, soak tooling, later alerts/auth/docs (roadmap 4–7)</td><td>A per-site invoice line</td></tr>
+</tbody>
+</table>
+<p>Mixing them makes CM look like a $50k+ product when the customer is really buying a box plus install labor.</p>
+
+<h2>Classic advertised vs Classic actual vs CM</h2>
+<table>
+<thead><tr><th>Line</th><th>Tester invitation (Classic)</th><th>First Classic site (what happened)</th><th>NGAME-CM v1 (first estimate)</th></tr></thead>
+<tbody>
+<tr><td>Hardware</td><td>Repurpose an office PC; no purchase</td><td>Existing surveillance PC (sleep/off still allowed)</td><td>Dedicated always-on mini PC + UPS. Do not use the FRP laptop.</td></tr>
+<tr><td>Cash to the org</td><td>$0</td><td>$0 hardware; labor unbilled</td><td>$500–1,000 capex + ~$40–90/year electricity</td></tr>
+<tr><td>Install complexity</td><td>Very low effort</td><td>Not easy: OAuth/Track B, three long visits</td><td>Same OAuth hardness plus never-sleep, scheduler, 14-day soak. First sites: similar or harder.</td></tr>
+<tr><td>FRP daily load</td><td>One dashboard click per business day</td><td>Click + live output + Audit Log in QBO</td><td>No daily click after soak. Exception response to notices. Audit Log still in QBO.</td></tr>
+<tr><td>Who must stay on</td><td>PC on when FRP clicks</td><td>If the PC slept, NGAME saw nothing (weekend hole)</td><td>The box, 24/7. That is the new operating cost.</td></tr>
+</tbody>
+</table>
+
+<h3>Site cash — year 1 (one surveillance host, no license fee)</h3>
+<table>
+<thead><tr><th>Item</th><th>Low</th><th>High</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Mini PC (16 GB RAM, enough disk for Ollama)</td><td>$400</td><td>$800</td><td>Windows mini PC class at the low end; Mac mini toward the high end. Prior appliance BOM.</td></tr>
+<tr><td>UPS</td><td>$50</td><td>$150</td><td>Roadmap Step 7. Cheap insurance against dirty power.</td></tr>
+<tr><td>Display / keyboard</td><td>$0</td><td>$150</td><td>$0 if headless + occasional laptop; budget if the FRP uses that box in person.</td></tr>
+<tr><td>Electricity (always-on, ~25–40 W)</td><td>$40/yr</td><td>$90/yr</td><td>Rough U.S. small-office rates. Not a generator study.</td></tr>
+<tr><td>Internet / QBO / Ollama</td><td>$0 extra</td><td>$0 extra</td><td>Already required for Classic. Local model, no cloud LLM fee.</td></tr>
+<tr><td>Software license</td><td>TBD</td><td>TBD</td><td>Testers were $0. Do not reuse “zero cost” once hardware is required.</td></tr>
+</tbody>
+</table>
+<p>Hardware subtotal to stand up the host: about <strong>$500–1,000 once</strong>, then tens of dollars a year in power. That is the part Classic could honestly call optional. CM cannot.</p>
+
+<h3>Labor — the larger TCO, still</h3>
+<table>
+<thead><tr><th>Who</th><th>Classic first site</th><th>CM first site (now)</th><th>CM after installer + soak playbook</th></tr></thead>
+<tbody>
+<tr><td>Consultant on-site / on-call</td><td>3 very long visits (treat as ~4–6 person-days)</td><td>Same OAuth + host policy + scheduler prove + start of soak: ~5–8 person-days</td><td>Target 1–2 days on site + remote. Not true until Step 7 docs exist.</td></tr>
+<tr><td>Site IT</td><td>Little: a PC that can sleep</td><td>Owns power, Ethernet, no-sleep, physical placement, who gets “run failed”</td><td>Same, but scripted</td></tr>
+<tr><td>FRP, year 1</td><td>Daily click, ~2–10 min, plus Audit Log protocol</td><td>14-day hands-off soak, then glance at lamp / mail; Audit Log still required</td><td>Exception-driven. Minutes fall; responsibility does not disappear.</td></tr>
+</tbody>
+</table>
+<div class="info">
+<p>If those consultant days were billed (they were not, for testers), Classic first-site labor at $150–250/hour is already several thousand dollars. CM does not erase that. It adds the box on top, and the first CM installs will not be shorter than Classic until the product is boring to install.</p>
+</div>
+
+<h2>Is the CM install more complicated?</h2>
+<p>Yes, for the implementer. No, eventually, for the FRP’s daily ritual.</p>
+<p><strong>Harder than Classic (install / IT):</strong> dedicated host that must not sleep; NGAME scheduler kept alive at boot; file lock + journal; 14-day soak; later LAN auth, UPS, alerts; OAuth is still the Classic pain.</p>
+<p><strong>Easier than Classic (steady state):</strong> no daily green button; weekend samples without the FRP PC; FRP responds to MEDIUM/HIGH or a failed run; bookkeeper PC still has no NGAME software.</p>
+
+<h2>Year-1 site TCO — rolled up</h2>
+<table>
+<thead><tr><th>Scenario</th><th>Cash outlay</th><th>Consultant labor</th><th>Honest one-liner</th></tr></thead>
+<tbody>
+<tr><td>Classic as advertised</td><td>$0</td><td>“Very low effort”</td><td>Do not reuse this sentence for CM.</td></tr>
+<tr><td>Classic as lived</td><td>~$0 hardware</td><td>3 long visits</td><td>Zero cash, high founder labor.</td></tr>
+<tr><td>CM, tester still subsidized</td><td>$500–1,000 (you or they buy the box)</td><td>5–8 days first site</td><td>Invitation can waive license, not physics: something must stay on.</td></tr>
+<tr><td>CM, org pays its way (no license yet)</td><td>$550–1,100 year 1 including power</td><td>Plus install days if you invoice</td><td>Small-capex appliance + professional services.</td></tr>
+</tbody>
+</table>
+
+<h2>Vendor TCO (do not put on the customer one-pager)</h2>
+<p>Productizing Tier A (always-on periodic watchdog) remains about <strong>5–10 person-months</strong> for a small team. That is how CM becomes installable without three heroic visits. It is not a per-site hardware number.</p>
+</body>
+</html>

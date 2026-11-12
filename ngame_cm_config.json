@@ -1,0 +1,9 @@
+{
+  "_comment": "NGAME-CM orchestration only. No secrets. Detector settings do not live here. enabled stays false until a never-sleep host starts the 14-day soak. Score the gate with python3 ngame_soak_check.py; do not mark Step 6 complete until that checker prints PASSED.",
+  "enabled": false,
+  "timezone": "America/Los_Angeles",
+  "run_hour_local": 18,
+  "phase1_weekdays_only": true,
+  "phase2_every_calendar_day": true,
+  "dashboard_is_launcher": true
+}
